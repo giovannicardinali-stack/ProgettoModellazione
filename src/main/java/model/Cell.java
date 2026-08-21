@@ -8,8 +8,6 @@ public class Cell {
         this.occupant = occupant;
     }
 
-
-
     public void setOccupant(Occupant occupant) { this.occupant = occupant; }
 
     public Occupant getOccupant() { return occupant; }
