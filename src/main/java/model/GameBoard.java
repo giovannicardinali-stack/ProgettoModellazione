@@ -12,11 +12,14 @@ public class GameBoard {
     }
 
     public boolean cellIsEmpty(Coordinates coordinates) {
-        if(gameMap.containsKey(coordinates)) {
-            if(gameMap.get(coordinates).getOccupant().isSolid()){
-                return false;
-            }
+        if(!gameMap.containsKey(coordinates)) {
+            return false;
         }
-        return true;
+        Cell cell = gameMap.get(coordinates);
+
+        if(cell.getOccupant() == null) {
+            return true;
+        }
+        return !cell.getOccupant().isSolid();
     }
 }

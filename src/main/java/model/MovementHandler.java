@@ -22,15 +22,27 @@ public class MovementHandler {
 
         }
         else if(direction == Direction.DOWN) {
-            playerCoordinates.setY(playerCoordinates.getY() + 1);
+            Coordinates coordinates = new Coordinates(playerCoordinates.getX(), playerCoordinates.getY() + 1);
+            if(gameBoard.cellIsEmpty(coordinates)) {
+                playerCoordinates.setY(playerCoordinates.getY() + 1);
+            }
         }
         else if(direction == Direction.LEFT) {
-            playerCoordinates.setX(playerCoordinates.getX() - 1);
+            Coordinates coordinates = new Coordinates(playerCoordinates.getX() - 1, playerCoordinates.getY());
+            if(gameBoard.cellIsEmpty(coordinates)) {
+                playerCoordinates.setX(playerCoordinates.getX() - 1);
+            }
+
         }
         else if(direction == Direction.RIGHT) {
-            playerCoordinates.setX(playerCoordinates.getX() + 1);
-        }
+            Coordinates coordinates = new Coordinates(playerCoordinates.getX() + 1, playerCoordinates.getY());
+            if(gameBoard.cellIsEmpty(coordinates)) {
+                playerCoordinates.setX(playerCoordinates.getX() + 1);
+            }
 
-        System.out.println("la cella è occupata");
+        }
+        else {
+            System.out.println("la cella è occupata");
+        }
     }
 }
