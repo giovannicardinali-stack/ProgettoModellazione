@@ -14,35 +14,26 @@ public class MovementHandler {
     }
 
     public void movePlayer(Direction direction){
-        if(direction == Direction.UP) {
-            Coordinates coordinates = new Coordinates(playerCoordinates.getX(), playerCoordinates.getY() - 1);
-            if(gameBoard.cellIsEmpty(coordinates)) {
-                playerCoordinates.setY(playerCoordinates.getY() - 1);
-            }
 
-        }
-        else if(direction == Direction.DOWN) {
-            Coordinates coordinates = new Coordinates(playerCoordinates.getX(), playerCoordinates.getY() + 1);
-            if(gameBoard.cellIsEmpty(coordinates)) {
-                playerCoordinates.setY(playerCoordinates.getY() + 1);
-            }
-        }
-        else if(direction == Direction.LEFT) {
-            Coordinates coordinates = new Coordinates(playerCoordinates.getX() - 1, playerCoordinates.getY());
-            if(gameBoard.cellIsEmpty(coordinates)) {
-                playerCoordinates.setX(playerCoordinates.getX() - 1);
-            }
 
-        }
-        else if(direction == Direction.RIGHT) {
-            Coordinates coordinates = new Coordinates(playerCoordinates.getX() + 1, playerCoordinates.getY());
-            if(gameBoard.cellIsEmpty(coordinates)) {
-                playerCoordinates.setX(playerCoordinates.getX() + 1);
-            }
+        int newX = playerCoordinates.getX();
+        int newY = playerCoordinates.getY();
 
+        switch (direction){
+            case UP ->  newY--;
+            case DOWN -> newY++;
+            case LEFT -> newX--;
+            case RIGHT -> newX++;
         }
-        else {
-            System.out.println("la cella è occupata");
+
+        Coordinates targetCoordinates = new Coordinates(newX, newY);
+
+        if(gameBoard.cellIsEmpty(targetCoordinates)){
+            playerCoordinates.setX(newX);
+            playerCoordinates.setY(newY);
+        }
+        else{
+            System.out.println("La cella è occupata o non valida...");
         }
     }
 }
