@@ -22,4 +22,8 @@ public class GameBoard {
         }
         return !cell.getOccupant().isSolid();
     }
+
+    public Cell getCell(Coordinates coordinates) {
+        return gameMap.get(coordinates);
+    }
 }
