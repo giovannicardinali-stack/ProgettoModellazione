@@ -17,19 +17,6 @@ public class MovementHandler {
 
         Coordinates targetCoordinates = calculateTargetCoordinates(playerCoordinates, direction);
 
-
-//        int newX = playerCoordinates.getX();
-//        int newY = playerCoordinates.getY();
-//
-//        switch (direction){
-//            case UP ->  newY--;
-//            case DOWN -> newY++;
-//            case LEFT -> newX--;
-//            case RIGHT -> newX++;
-//        }
-//
-//        Coordinates targetCoordinates = new Coordinates(newX, newY);
-
         if(gameBoard.cellIsEmpty(targetCoordinates)){
             playerCoordinates.setX(targetCoordinates.getX());
             playerCoordinates.setY(targetCoordinates.getY());
@@ -43,22 +30,11 @@ public class MovementHandler {
 
         Direction[] directions = {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
 
-        int playerCoordinatesX = playerCoordinates.getX();
-        int playerCoordinatesY = playerCoordinates.getY();
+
 
         for(Direction direction : directions){
 
-            int targetX = playerCoordinatesX;
-            int targetY = playerCoordinatesY;
-
-            switch (direction){
-                case UP -> targetY--;
-                case DOWN -> targetY++;
-                case LEFT -> targetX--;
-                case RIGHT -> targetX++;
-            }
-
-            Coordinates targetCoordinates = new Coordinates(targetX, targetY);
+            Coordinates targetCoordinates = calculateTargetCoordinates(playerCoordinates, direction);
 
             Cell targetCell = gameBoard.getCell(targetCoordinates);
 
