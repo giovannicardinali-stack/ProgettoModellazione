@@ -36,7 +36,7 @@ public class MovementHandler {
         }
     }
 
-    public void getAdjacentNPCs(){
+    public NPC getAdjacentNPCs(){
 
         Direction[] directions = {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
 
@@ -58,7 +58,13 @@ public class MovementHandler {
             Coordinates targetCoordinates = new Coordinates(targetX, targetY);
 
             Cell targetCell = gameBoard.getCell(targetCoordinates);
+
+            if(targetCell != null && targetCell.getOccupant() instanceof NPC){
+                return (NPC) targetCell.getOccupant();
+            }
         }
+
+        return null;
 
     }
 }
