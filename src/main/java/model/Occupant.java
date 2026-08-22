@@ -11,5 +11,8 @@ public abstract class Occupant {
         this.isSolid = solid;
     }
 
+    public boolean isSolid() {
+        return isSolid;
+    }
 
 }

@@ -9,19 +9,28 @@ public class MovementHandler {
         this.gameBoard = gameBoard;
     }
 
-
     public Coordinates getPlayerCoordinates() {
         return playerCoordinates;
     }
 
-    public void movePlayer(Direction direction) {
+    public void movePlayer(Direction direction){
         if(direction == Direction.UP) {
-            playerCoordinates.setY(playerCoordinates.getY() - 1);
+            Coordinates coordinates = new Coordinates(playerCoordinates.getX(), playerCoordinates.getY() - 1);
+            if(gameBoard.cellIsEmpty(coordinates)) {
+                playerCoordinates.setY(playerCoordinates.getY() - 1);
+            }
+
         }
-    }
+        else if(direction == Direction.DOWN) {
+            playerCoordinates.setY(playerCoordinates.getY() + 1);
+        }
+        else if(direction == Direction.LEFT) {
+            playerCoordinates.setX(playerCoordinates.getX() - 1);
+        }
+        else if(direction == Direction.RIGHT) {
+            playerCoordinates.setX(playerCoordinates.getX() + 1);
+        }
 
-
-    public void updateGameBoard(){
-
+        System.out.println("la cella è occupata");
     }
 }

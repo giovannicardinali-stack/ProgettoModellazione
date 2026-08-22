@@ -10,4 +10,13 @@ public class GameBoard {
     public GameBoard() {
         gameMap = new HashMap<>();
     }
+
+    public boolean cellIsEmpty(Coordinates coordinates) {
+        if(gameMap.containsKey(coordinates)) {
+            if(gameMap.get(coordinates).getOccupant().isSolid()){
+                return false;
+            }
+        }
+        return true;
+    }
 }
