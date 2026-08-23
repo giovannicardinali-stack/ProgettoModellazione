@@ -16,6 +16,10 @@ public class NPC extends Occupant{
         this.dialogue = dialogue;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public int getPower() { return power; }
 
     public void setPower(int power) { this.power = power; }

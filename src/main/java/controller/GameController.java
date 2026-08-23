@@ -22,6 +22,8 @@ public class GameController {
             }
             else {
                 String dialogue = nearNPC.getDialogue();
+                //to do update view
+                System.out.println(nearNPC.getName() + ": " + dialogue);
             }
         }
         else {
@@ -39,13 +41,6 @@ public class GameController {
 
         Coordinates newPosition = movementHandler.getPlayerCoordinates();
 
-        //update view
-    }
-
-    public void onInteraction(){
-        NPC npc = movementHandler.getAdjacentNPC();
-        if(npc != null){
-            //update view
-        }
+        //to do update view
     }
 }

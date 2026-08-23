@@ -2,8 +2,8 @@ package model;
 
 public abstract class Occupant {
 
-    private String name;
-    private boolean isSolid;
+    protected String name;
+    protected boolean isSolid;
 
 
     public Occupant(String name, boolean solid) {
