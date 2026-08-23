@@ -9,6 +9,10 @@ public class MovementHandler {
         this.gameBoard = gameBoard;
     }
 
+    public Coordinates getPlayerCoordinates() {
+        return playerCoordinates;
+    }
+
     public void movePlayer(Direction direction){
 
         Coordinates targetCoordinates = calculateTargetCoordinates(playerCoordinates, direction);
