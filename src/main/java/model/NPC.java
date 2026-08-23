@@ -27,4 +27,8 @@ public class NPC extends Occupant{
     public boolean isHostile() { return isHostile; }
 
     public void setIsHostile(boolean isHostile) { this.isHostile = isHostile; }
+
+    public String getDialogue() { return dialogue; }
+
+    public void setDialogue(String dialogue) { this.dialogue = dialogue; }
 }
