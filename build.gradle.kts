@@ -1,9 +1,11 @@
+
 plugins {
     id("java")
+    id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
-group = "org.example"
+group = "it.unicam.cs.mpgc.rpg125928"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -13,6 +15,10 @@ repositories {
 javafx{
     version = "25.0.4"
     modules = listOf("javafx.controls", "javafx.fxml")
+}
+
+application{
+    mainClass.set("it.unicam.cs.mpgc.rpg125928.Main")
 }
 
 
