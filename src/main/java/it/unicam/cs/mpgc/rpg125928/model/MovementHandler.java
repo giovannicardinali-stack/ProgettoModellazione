@@ -1,4 +1,4 @@
-package model;
+package it.unicam.cs.mpgc.rpg125928.model;
 
 public class MovementHandler {
     private Coordinates playerCoordinates;

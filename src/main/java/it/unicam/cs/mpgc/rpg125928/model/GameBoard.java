@@ -1,4 +1,4 @@
-package model;
+package it.unicam.cs.mpgc.rpg125928.model;
 
 import java.util.HashMap;
 import java.util.Map;

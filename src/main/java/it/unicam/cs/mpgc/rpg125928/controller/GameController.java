@@ -1,9 +1,9 @@
-package controller;
+package it.unicam.cs.mpgc.rpg125928.controller;
 
-import model.Coordinates;
-import model.Direction;
-import model.MovementHandler;
-import model.NPC;
+import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
+import it.unicam.cs.mpgc.rpg125928.model.Direction;
+import it.unicam.cs.mpgc.rpg125928.model.MovementHandler;
+import it.unicam.cs.mpgc.rpg125928.model.NPC;
 
 public class GameController {
     MovementHandler movementHandler;
