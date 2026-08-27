@@ -1,34 +1,19 @@
 package it.unicam.cs.mpgc.rpg125928.controller;
 
-import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
-import it.unicam.cs.mpgc.rpg125928.model.Direction;
-import it.unicam.cs.mpgc.rpg125928.model.MovementHandler;
-import it.unicam.cs.mpgc.rpg125928.model.NPC;
+import it.unicam.cs.mpgc.rpg125928.model.*;
 
 public class GameController {
     MovementHandler movementHandler;
+    InteractionHandler interactionHandler;
     //to do view
 
-    public  GameController(MovementHandler movementHandler) {
+    public  GameController(MovementHandler movementHandler, InteractionHandler interactionHandler) {
         this.movementHandler = movementHandler;
+        this.interactionHandler = interactionHandler;
     }
 
     public void handleInteraction(){
-        NPC nearNPC = movementHandler.getAdjacentNPC();
 
-        if(nearNPC != null){
-            if(nearNPC.isHostile()){
-                combatInteraction(nearNPC);
-            }
-            else {
-                String dialogue = nearNPC.getDialogue();
-                //to do update view
-                System.out.println(nearNPC.getName() + ": " + dialogue);
-            }
-        }
-        else {
-            System.out.println("non c'è nessuno con cui interagire nelle vicinanze");
-        }
     }
 
     public void combatInteraction(NPC enemy){
