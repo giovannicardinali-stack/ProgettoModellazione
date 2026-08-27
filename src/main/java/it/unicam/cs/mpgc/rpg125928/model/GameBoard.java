@@ -6,9 +6,11 @@ import java.util.Map;
 public class GameBoard {
 
     private Map<Coordinates, Cell> gameMap;
+    private final int mapSize;
 
-    public GameBoard() {
+    public GameBoard(int MapSize) {
         gameMap = new HashMap<>();
+        this.mapSize = gameMap.size();
     }
 
     public boolean cellIsEmpty(Coordinates coordinates) {
@@ -25,5 +27,9 @@ public class GameBoard {
 
     public Cell getCell(Coordinates coordinates) {
         return gameMap.get(coordinates);
+    }
+
+    public Map<Coordinates, Cell> getGameMap() {
+        return gameMap;
     }
 }

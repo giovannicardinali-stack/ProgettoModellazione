@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -48,7 +48,8 @@ public class GameView {
         BorderPane gameRoot = new BorderPane();
 
         //center zone: map
-        Pane mapArea = new Pane();
+        GridPane mapArea = new GridPane();
+        mapArea.setAlignment(Pos.CENTER);
         mapArea.setStyle("-fx-background-color: #1e1e1e;");
 
         //downBar
