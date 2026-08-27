@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class GameBoard {
 
-    private Map<Coordinates, Cell> gameMap;
+    private Map<Coordinates, Occupant> gameMap;
     private final int mapSize;
 
     public GameBoard(int MapSize) {
@@ -17,19 +17,20 @@ public class GameBoard {
         if(!gameMap.containsKey(coordinates)) {
             return false;
         }
-        Cell cell = gameMap.get(coordinates);
+        Occupant occupant = gameMap.get(coordinates);
 
-        if(cell.getOccupant() == null) {
-            return true;
-        }
-        return !cell.getOccupant().isSolid();
+        return !occupant.isSolid();
     }
 
-    public Cell getCell(Coordinates coordinates) {
+    public void addOccupant(Coordinates coordinates, Occupant occupant) {
+        gameMap.put(coordinates, occupant);
+    }
+
+    public Occupant getOccupant(Coordinates coordinates) {
         return gameMap.get(coordinates);
     }
 
-    public Map<Coordinates, Cell> getGameMap() {
+    public Map<Coordinates, Occupant> getGameMap() {
         return gameMap;
     }
 }

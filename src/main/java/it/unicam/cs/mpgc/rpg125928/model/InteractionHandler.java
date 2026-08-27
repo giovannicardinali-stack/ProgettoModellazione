@@ -4,7 +4,6 @@ public class InteractionHandler {
 
     private MovementHandler movementHandler;
 
-
     public InteractionHandler(MovementHandler movementHandler) {
         this.movementHandler = movementHandler;
     }
