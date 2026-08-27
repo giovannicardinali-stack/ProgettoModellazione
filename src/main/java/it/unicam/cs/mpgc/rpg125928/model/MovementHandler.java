@@ -33,9 +33,9 @@ public class MovementHandler {
         for(Direction direction : directions){
 
             Coordinates targetCoordinates = calculateTargetCoordinates(playerCoordinates, direction);
-            Cell targetCell = gameBoard.getCell(targetCoordinates);
-            if(targetCell != null && targetCell.getOccupant() instanceof NPC){
-                return (NPC) targetCell.getOccupant();
+            Occupant targetCell = gameBoard.getOccupant(targetCoordinates);
+            if(targetCell != null && targetCell instanceof NPC){
+                return (NPC) targetCell;
             }
         }
         return null;

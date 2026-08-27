@@ -9,12 +9,12 @@ public class MapHandler {
     public GameBoard generateMap(){
         GameBoard gameBoard = new GameBoard(15);
 
+        //add perimeter walls
         for (int i = 0; i < 15; i++) {
             gameBoard.addOccupant(new Coordinates(i, 0), new Obstacle("Wall", true));
             gameBoard.addOccupant(new Coordinates(i, 14), new Obstacle("Wall", true));
             gameBoard.addOccupant(new Coordinates(0, i), new Obstacle("Wall", true));
             gameBoard.addOccupant(new Coordinates(14, i), new Obstacle("Wall", true));
-
         }
 
         return gameBoard;

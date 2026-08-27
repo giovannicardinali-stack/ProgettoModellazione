@@ -8,14 +8,14 @@ public class GameBoard {
     private Map<Coordinates, Occupant> gameMap;
     private final int mapSize;
 
-    public GameBoard(int MapSize) {
+    public GameBoard(int mapSize) {
         gameMap = new HashMap<>();
-        this.mapSize = gameMap.size();
+        this.mapSize = mapSize;
     }
 
     public boolean cellIsEmpty(Coordinates coordinates) {
         if(!gameMap.containsKey(coordinates)) {
-            return false;
+            return true;
         }
         Occupant occupant = gameMap.get(coordinates);
 
