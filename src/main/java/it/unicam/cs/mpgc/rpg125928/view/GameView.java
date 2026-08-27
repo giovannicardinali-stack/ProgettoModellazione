@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -54,6 +55,27 @@ public class GameView {
         VBox downBar = new VBox(5);
         downBar.setPadding(new Insets(10));
         downBar.setStyle("-fx-background-color: #222222;");
+
+        //text for in-game messages
+        TextArea textArea = new TextArea();
+        textArea.setPrefHeight(100);
+        textArea.setEditable(false);
+        textArea.setText("Benvenuto");
+
+        //putting the elements in the main BorderPane
+        gameRoot.setCenter(mapArea);
+        gameRoot.setBottom(downBar);
+
+
+        Scene gameScene = new Scene(gameRoot,900,600);
+        primaryStage.setTitle("");
+        primaryStage.setScene(gameScene);
+
+
+
+
+
+
 
     }
 }
