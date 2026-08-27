@@ -13,17 +13,12 @@ public class GameController {
     }
 
     public void handleInteraction(){
-
-    }
-
-    public void combatInteraction(NPC enemy){
-        //to do combat logic
+        interactionHandler.handleInteraction();
     }
 
     public void onDirectionChange(Direction direction){
 
         movementHandler.movePlayer(direction);
-
         Coordinates newPosition = movementHandler.getPlayerCoordinates();
 
         //to do update view

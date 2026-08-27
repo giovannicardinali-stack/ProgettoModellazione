@@ -26,4 +26,8 @@ public class InteractionHandler {
             System.out.println("non c'è nessuno con cui interagire nelle vicinanze");
         }
     }
+
+    public void combatInteraction(NPC enemy){
+        //to do combat logic
+    }
 }
