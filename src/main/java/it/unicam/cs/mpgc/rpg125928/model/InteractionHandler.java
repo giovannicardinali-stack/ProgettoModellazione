@@ -9,24 +9,30 @@ public class InteractionHandler {
     }
 
     public void handleInteraction(){
-        NPC nearNPC = movementHandler.getAdjacentNPC();
+        Occupant target = movementHandler.getAdjacentOccupant();
 
-        if(nearNPC != null){
+        if(target == null){
+            System.out.println("non c'è nulla con cui interagire nelle vicinanze...");
+            return;
+        }
+
+        if(target instanceof NPC nearNPC){
             if(nearNPC.isHostile()){
                 combatInteraction(nearNPC);
             }
             else {
                 String dialogue = nearNPC.getDialogue();
-                //to do update view
+                //todo update view
                 System.out.println(nearNPC.getName() + ": " + dialogue);
             }
         }
-        else {
-            System.out.println("non c'è nessuno con cui interagire nelle vicinanze");
+        else if(target instanceof Collectible nearItem){
+            //todo handle pickupItem
+
         }
     }
 
     public void combatInteraction(NPC enemy){
-        //to do combat logic
+        //todo combat logic
     }
 }
