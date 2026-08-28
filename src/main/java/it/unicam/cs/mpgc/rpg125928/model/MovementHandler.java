@@ -52,4 +52,17 @@ public class MovementHandler {
         }
         return new Coordinates(newX, newY);
     }
+
+    public Coordinates getAdjacentOccupantCoordinates(){
+        Direction[] directions = {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
+
+        for(Direction direction : directions){
+            Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
+            Occupant targetCell = gameBoard.getOccupant(targetCoordinates);
+            if(targetCell != null){
+                return targetCoordinates;
+            }
+        }
+        return null;
+    }
 }

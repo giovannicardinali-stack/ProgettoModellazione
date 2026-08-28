@@ -1,10 +1,6 @@
-package it.unicam.cs.mpgc.rpg125928.controller;
+package it.unicam.cs.mpgc.rpg125928.model;
 
-import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
-import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
-import it.unicam.cs.mpgc.rpg125928.model.Obstacle;
-
-public class MapHandler {
+public class MapGenerator {
 
     public GameBoard generateMap(){
         GameBoard gameBoard = new GameBoard(15);

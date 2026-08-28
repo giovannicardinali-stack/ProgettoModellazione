@@ -4,19 +4,22 @@ public class InteractionHandler {
 
     private MovementHandler movementHandler;
     Player player;
+    GameBoard gameBoard;
 
-    public InteractionHandler(MovementHandler movementHandler,  Player player) {
+    public InteractionHandler(MovementHandler movementHandler,  Player player, GameBoard gameBoard) {
         this.movementHandler = movementHandler;
         this.player = player;
+        this.gameBoard = gameBoard;
     }
 
     public void handleInteraction(){
-        Occupant target = movementHandler.getAdjacentOccupant();
+        Coordinates targetCoordinates = movementHandler.getAdjacentOccupantCoordinates();
 
-        if(target == null){
+        if(targetCoordinates == null){
             System.out.println("non c'è nulla con cui interagire nelle vicinanze...");
             return;
         }
+        Occupant target = gameBoard.getOccupant(targetCoordinates);
 
         if(target instanceof NPC nearNPC){
             if(nearNPC.isHostile()){
@@ -29,15 +32,15 @@ public class InteractionHandler {
             }
         }
         else if(target instanceof Collectible nearItem){
-            pickUpItem(nearItem);
+            //add the item in the player's inventory and remove it from the map
+            if(player.addItem(nearItem)){
+                gameBoard.removeOccupant(targetCoordinates);
+                System.out.println("oggetto raccolto: "+ nearItem.getName());
+            }
         }
     }
 
     public void combatInteraction(NPC enemy){
         //todo combat logic
-    }
-
-    public void pickUpItem(Collectible item){
-        player.addItem(item);
     }
 }

@@ -33,4 +33,8 @@ public class GameBoard {
     public Map<Coordinates, Occupant> getGameMap() {
         return gameMap;
     }
+
+    public boolean removeOccupant(Coordinates coordinates) {
+        return gameMap.remove(coordinates) != null;
+    }
 }
