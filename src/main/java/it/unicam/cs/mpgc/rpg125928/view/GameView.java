@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg125928.view;
 
+import it.unicam.cs.mpgc.rpg125928.controller.GameController;
+import it.unicam.cs.mpgc.rpg125928.controller.InputController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,10 +17,12 @@ import javafx.stage.Stage;
 public class GameView {
 
     private final Stage primaryStage;
+    private final GameController gamecontroller;
 
 
-    public GameView(Stage primaryStage){
+    public GameView(Stage primaryStage, GameController gamecontroller) {
         this.primaryStage = primaryStage;
+        this.gamecontroller = gamecontroller;
     }
 
     public void showMainMenu(){
@@ -69,6 +73,10 @@ public class GameView {
 
 
         Scene gameScene = new Scene(gameRoot,900,600);
+
+        InputController inputController = new InputController(gamecontroller);
+        inputController.setUpListeners(gameScene);
+
         primaryStage.setTitle("");
         primaryStage.setScene(gameScene);
 
