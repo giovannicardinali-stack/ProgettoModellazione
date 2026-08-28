@@ -3,9 +3,11 @@ package it.unicam.cs.mpgc.rpg125928.model;
 public class InteractionHandler {
 
     private MovementHandler movementHandler;
+    Player player;
 
-    public InteractionHandler(MovementHandler movementHandler) {
+    public InteractionHandler(MovementHandler movementHandler,  Player player) {
         this.movementHandler = movementHandler;
+        this.player = player;
     }
 
     public void handleInteraction(){
@@ -27,12 +29,15 @@ public class InteractionHandler {
             }
         }
         else if(target instanceof Collectible nearItem){
-            //todo handle pickupItem
-
+            pickUpItem(nearItem);
         }
     }
 
     public void combatInteraction(NPC enemy){
         //todo combat logic
+    }
+
+    public void pickUpItem(Collectible item){
+        player.addItem(item);
     }
 }
