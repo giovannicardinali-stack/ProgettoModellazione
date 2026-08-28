@@ -22,6 +22,7 @@ public class InputController {
                 case DOWN, S -> gameController.onDirectionChange(Direction.DOWN);
                 case LEFT, A -> gameController.onDirectionChange(Direction.LEFT);
                 case RIGHT, D -> gameController.onDirectionChange(Direction.RIGHT);
+                case E, SPACE -> gameController.handleInteraction();
 
                 default -> {
 
