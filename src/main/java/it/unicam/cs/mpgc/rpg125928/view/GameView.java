@@ -54,7 +54,9 @@ public class GameView {
         //center zone: map
         GridPane mapArea = new GridPane();
         mapArea.setAlignment(Pos.CENTER);
-        mapArea.setStyle("-fx-background-color: #1e1e1e;");
+        mapArea.setStyle("-fx-background-color: #1e1e1e;" +
+                "-fx-background-image: url('" + getClass().getResource("/images/floor.jpg").toExternalForm() + "');" +
+                "-fx-background-repeat: repeat;");
 
         //downBar
         VBox downBar = new VBox(5);
