@@ -26,16 +26,15 @@ public class MovementHandler {
         }
     }
 
-    public NPC getAdjacentNPC(){
 
+    public Occupant getAdjacentOccupant(){
         Direction[] directions = {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
 
         for(Direction direction : directions){
-
             Coordinates targetCoordinates = calculateTargetCoordinates(playerCoordinates, direction);
             Occupant targetCell = gameBoard.getOccupant(targetCoordinates);
-            if(targetCell != null && targetCell instanceof NPC){
-                return (NPC) targetCell;
+            if(targetCell != null){
+                return targetCell;
             }
         }
         return null;
