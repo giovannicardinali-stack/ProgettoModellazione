@@ -12,12 +12,14 @@ public class Main extends Application {
     public void start(Stage primaryStage){
         Player player = new Player("player1", true, 10, 10, 4);
 
-        GameBoard gameBoard = new GameBoard(15);
+        MapGenerator mapGenerator = new MapGenerator();
+
+        GameBoard gameBoard = mapGenerator.generateMap();
         Coordinates playerCoordinates = new Coordinates(3,11);
         MovementHandler movementHandler = new MovementHandler(playerCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
 
-        GameController gameController = new GameController(movementHandler, interactionHandler);
+        GameController gameController = new GameController(movementHandler, interactionHandler, gameBoard);
 
         GameView view = new GameView(primaryStage, gameController);
         view.showMainMenu();

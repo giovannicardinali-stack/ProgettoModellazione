@@ -2,12 +2,17 @@ package it.unicam.cs.mpgc.rpg125928.view;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.controller.InputController;
+import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
+import it.unicam.cs.mpgc.rpg125928.model.Obstacle;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -18,6 +23,9 @@ public class GameView {
 
     private final Stage primaryStage;
     private final GameController gamecontroller;
+
+    private GridPane mapArea;
+
 
 
     public GameView(Stage primaryStage, GameController gamecontroller) {
@@ -44,7 +52,6 @@ public class GameView {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public void showGameView(){
@@ -52,7 +59,7 @@ public class GameView {
         BorderPane gameRoot = new BorderPane();
 
         //center zone: map
-        GridPane mapArea = new GridPane();
+        mapArea = new GridPane();
         mapArea.setAlignment(Pos.CENTER);
         mapArea.setStyle("-fx-background-color: #1e1e1e;" +
                 "-fx-background-image: url('" + getClass().getResource("/images/floor.jpg").toExternalForm() + "');" +
@@ -82,11 +89,29 @@ public class GameView {
         primaryStage.setTitle("");
         primaryStage.setScene(gameScene);
 
+        if(gamecontroller != null && gamecontroller.getGameboard() != null) {
+            updateMapView(gamecontroller.getGameboard());
+        }
 
+    }
 
+    public void updateMapView(GameBoard gameBoard){
+        mapArea.getChildren().clear();
 
+        int tilesize = 32;
 
+        for (var entry : gameBoard.getGameMap().entrySet()) {
+            var coords = entry.getKey();
+            Occupant occupant = entry.getValue();
 
+            if(occupant instanceof Obstacle){
+                ImageView wallView = new ImageView(new Image(getClass().getResourceAsStream("/images/wall.png")));
+                wallView.setFitWidth(tilesize);
+                wallView.setFitHeight(tilesize);
+
+                mapArea.add(wallView,coords.getX(),coords.getY());
+            }
+        }
 
     }
 }
