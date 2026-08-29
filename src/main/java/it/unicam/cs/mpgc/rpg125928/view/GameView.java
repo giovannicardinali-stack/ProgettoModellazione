@@ -92,6 +92,9 @@ public class GameView {
         primaryStage.setTitle("");
         primaryStage.setScene(gameScene);
 
+        primaryStage.show();
+        gameScene.getRoot().requestFocus();
+
         if(gamecontroller != null && gamecontroller.getGameboard() != null) {
             updateMapView(gamecontroller.getGameboard());
         }

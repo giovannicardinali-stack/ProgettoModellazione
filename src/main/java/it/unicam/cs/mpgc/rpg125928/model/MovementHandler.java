@@ -18,8 +18,13 @@ public class MovementHandler {
         Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
 
         if(gameBoard.cellIsEmpty(targetCoordinates)){
-            playerCoordinates.setX(targetCoordinates.getX());
-            playerCoordinates.setY(targetCoordinates.getY());
+
+            Occupant player = gameBoard.getOccupant(playerCoordinates);
+            gameBoard.getGameMap().remove(playerCoordinates);
+
+            playerCoordinates = targetCoordinates;
+
+            gameBoard.addOccupant(playerCoordinates, player);
         }
         else{
             System.out.println("La cella è occupata o non valida...");

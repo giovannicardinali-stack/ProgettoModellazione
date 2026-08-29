@@ -10,18 +10,22 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage){
-        Player player = new Player("player1", true, 10, 10, 4);
 
         MapGenerator mapGenerator = new MapGenerator();
 
         GameBoard gameBoard = mapGenerator.generateMap();
+
         Coordinates playerCoordinates = new Coordinates(3,11);
+
+        Player player = (Player) gameBoard.getOccupant(playerCoordinates);
+
         MovementHandler movementHandler = new MovementHandler(playerCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
 
         GameController gameController = new GameController(movementHandler, interactionHandler, gameBoard);
 
         GameView view = new GameView(primaryStage, gameController);
+        gameController.setGameView(view);
         view.showMainMenu();
     }
 

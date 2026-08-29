@@ -20,7 +20,7 @@ public class MapGenerator {
         gameBoard.addOccupant(new Coordinates(8, 5), new Obstacle("Wall", true));
 
         Player player = new Player("player1", true, 10, 10, 4);
-        gameBoard.addOccupant(new Coordinates(11, 3), player);
+        gameBoard.addOccupant(new Coordinates(3, 11), player);
 
         return gameBoard;
     }

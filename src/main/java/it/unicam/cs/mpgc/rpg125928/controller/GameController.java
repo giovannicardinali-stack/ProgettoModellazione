@@ -1,12 +1,13 @@
 package it.unicam.cs.mpgc.rpg125928.controller;
 
 import it.unicam.cs.mpgc.rpg125928.model.*;
+import it.unicam.cs.mpgc.rpg125928.view.GameView;
 
 public class GameController {
     MovementHandler movementHandler;
     InteractionHandler interactionHandler;
     GameBoard gameboard;
-    //to do view
+    private GameView gameView;
 
     public  GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
@@ -14,6 +15,9 @@ public class GameController {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
         this.gameboard = gameboard;
+    }
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
     }
 
     public void handleInteraction(){
@@ -23,9 +27,13 @@ public class GameController {
     public void onDirectionChange(Direction direction){
 
         movementHandler.movePlayer(direction);
+
+        if(gameView != null){
+            gameView.updateMapView(gameboard);
+        }
+
         Coordinates newPosition = movementHandler.getPlayerCoordinates();
 
-        //to do update view
     }
 
     public GameBoard getGameboard() {
