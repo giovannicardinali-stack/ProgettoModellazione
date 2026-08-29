@@ -13,6 +13,15 @@ public class MapGenerator {
             gameBoard.addOccupant(new Coordinates(14, i), new Obstacle("Wall", true));
         }
 
+        gameBoard.addOccupant(new Coordinates(8, 1), new Obstacle("Wall", true));
+        gameBoard.addOccupant(new Coordinates(8, 2), new Obstacle("Wall", true));
+        gameBoard.addOccupant(new Coordinates(8, 3), new Obstacle("Wall", true));
+        gameBoard.addOccupant(new Coordinates(8, 4), new Obstacle("Wall", true));
+        gameBoard.addOccupant(new Coordinates(8, 5), new Obstacle("Wall", true));
+
+        Player player = new Player("player1", true, 10, 10, 4);
+        gameBoard.addOccupant(new Coordinates(11, 3), player);
+
         return gameBoard;
     }
 }
