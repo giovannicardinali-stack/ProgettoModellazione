@@ -61,6 +61,10 @@ public class GameView {
         //center zone: map
         mapArea = new GridPane();
         mapArea.setAlignment(Pos.CENTER);
+
+        mapArea.setHgap(0);
+        mapArea.setVgap(0);
+
         mapArea.setStyle("-fx-background-color: #1e1e1e;" +
                 "-fx-background-image: url('" + getClass().getResource("/images/floor.jpg").toExternalForm() + "');" +
                 "-fx-background-repeat: repeat;");
@@ -100,16 +104,27 @@ public class GameView {
 
         int tilesize = 32;
 
+        String wallImageUrl = getClass().getResource("/images/wall.png").toExternalForm();
+
+
         for (var entry : gameBoard.getGameMap().entrySet()) {
             var coords = entry.getKey();
             Occupant occupant = entry.getValue();
 
             if(occupant instanceof Obstacle){
-                ImageView wallView = new ImageView(new Image(getClass().getResourceAsStream("/images/wall.png")));
-                wallView.setFitWidth(tilesize);
-                wallView.setFitHeight(tilesize);
 
-                mapArea.add(wallView,coords.getX(),coords.getY());
+                javafx.scene.layout.Pane wallPane = new javafx.scene.layout.Pane();
+                wallPane.setPrefSize(tilesize, tilesize);
+                wallPane.setMinSize(tilesize, tilesize);
+                wallPane.setMaxSize(tilesize, tilesize);
+
+                wallPane.setStyle(
+                        "-fx-background-image: url('" + wallImageUrl + "');" +
+                                "-fx-background-size: 100% 100%;" +
+                                "-fx-background-repeat: no-repeat;"
+                );
+
+                mapArea.add(wallPane,coords.getX(),coords.getY());
             }
         }
 
