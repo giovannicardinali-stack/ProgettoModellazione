@@ -23,7 +23,10 @@ public class GameBoard {
     }
 
     public void addOccupant(Coordinates coordinates, Occupant occupant) {
-        gameMap.put(coordinates, occupant);
+        if(!gameMap.containsKey(coordinates)) {
+            gameMap.put(coordinates, occupant);
+        }
+
     }
 
     public Occupant getOccupant(Coordinates coordinates) {
