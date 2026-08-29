@@ -2,10 +2,7 @@ package it.unicam.cs.mpgc.rpg125928.view;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.controller.InputController;
-import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
-import it.unicam.cs.mpgc.rpg125928.model.Obstacle;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant;
-import it.unicam.cs.mpgc.rpg125928.model.Player;
+import it.unicam.cs.mpgc.rpg125928.model.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -110,6 +107,8 @@ public class GameView {
 
         String playerImageUrl = getClass().getResource("/images/player.png").toExternalForm();
 
+        String NPCImageUrl = getClass().getResource("/images/NPC.png").toExternalForm();
+
         for (var entry : gameBoard.getGameMap().entrySet()) {
             var coords = entry.getKey();
             Occupant occupant = entry.getValue();
@@ -138,6 +137,20 @@ public class GameView {
 
                 playerPane.setStyle(
                         "-fx-background-image: url('" + playerImageUrl + "');" +
+                                "-fx-background-size: 100% 100%;" +
+                                "-fx-background-repeat: no-repeat;"
+                );
+
+                mapArea.add(playerPane, coords.getX(), coords.getY());
+            } else if (occupant instanceof NPC){
+
+                javafx.scene.layout.Pane playerPane = new javafx.scene.layout.Pane();
+                playerPane.setPrefSize(tilesize, tilesize);
+                playerPane.setMinSize(tilesize, tilesize);
+                playerPane.setMaxSize(tilesize, tilesize);
+
+                playerPane.setStyle(
+                        "-fx-background-image: url('" + NPCImageUrl + "');" +
                                 "-fx-background-size: 100% 100%;" +
                                 "-fx-background-repeat: no-repeat;"
                 );
