@@ -11,11 +11,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 
 public class GameView {
+
+    private static final int tileSize = 32;
 
     private final Stage primaryStage;
     private final GameController gamecontroller;
@@ -35,7 +40,6 @@ public class GameView {
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Button newGameButton = new Button("Nuova Partita");
-        //to do button to load an already started game
         Button exitButton = new Button("Exit");
 
         newGameButton.setOnAction(e -> showGameView());
@@ -104,62 +108,13 @@ public class GameView {
     public void updateMapView(GameBoard gameBoard){
         mapArea.getChildren().clear();
 
-        int tilesize = 32;
-
-        String wallImageUrl = getClass().getResource("/images/wall.png").toExternalForm();
-
-        String playerImageUrl = getClass().getResource("/images/player.png").toExternalForm();
-
-        String NPCImageUrl = getClass().getResource("/images/NPC.png").toExternalForm();
-
-        for (var entry : gameBoard.getGameMap().entrySet()) {
-            var coords = entry.getKey();
+        for(var entry : gameBoard.getGameMap().entrySet()){
+            Coordinates coordinates = entry.getKey();
             Occupant occupant = entry.getValue();
 
-            if(occupant instanceof Obstacle){
-
-                javafx.scene.layout.Pane wallPane = new javafx.scene.layout.Pane();
-                wallPane.setPrefSize(tilesize, tilesize);
-                wallPane.setMinSize(tilesize, tilesize);
-                wallPane.setMaxSize(tilesize, tilesize);
-
-                wallPane.setStyle(
-                        "-fx-background-image: url('" + wallImageUrl + "');" +
-                                "-fx-background-size: 100% 100%;" +
-                                "-fx-background-repeat: no-repeat;"
-                );
-
-                mapArea.add(wallPane,coords.getX(),coords.getY());
-            }
-            else if(occupant instanceof Player){
-
-                javafx.scene.layout.Pane playerPane = new javafx.scene.layout.Pane();
-                playerPane.setPrefSize(tilesize, tilesize);
-                playerPane.setMinSize(tilesize, tilesize);
-                playerPane.setMaxSize(tilesize, tilesize);
-
-                playerPane.setStyle(
-                        "-fx-background-image: url('" + playerImageUrl + "');" +
-                                "-fx-background-size: 100% 100%;" +
-                                "-fx-background-repeat: no-repeat;"
-                );
-
-                mapArea.add(playerPane, coords.getX(), coords.getY());
-            } else if (occupant instanceof NPC){
-
-                javafx.scene.layout.Pane playerPane = new javafx.scene.layout.Pane();
-                playerPane.setPrefSize(tilesize, tilesize);
-                playerPane.setMinSize(tilesize, tilesize);
-                playerPane.setMaxSize(tilesize, tilesize);
-
-                playerPane.setStyle(
-                        "-fx-background-image: url('" + NPCImageUrl + "');" +
-                                "-fx-background-size: 100% 100%;" +
-                                "-fx-background-repeat: no-repeat;"
-                );
-
-                mapArea.add(playerPane, coords.getX(), coords.getY());
-
+            Pane tilePane = createTilePane(occupant);
+            if(tilePane != null){
+                mapArea.add(tilePane,coordinates.getX(),coordinates.getY());
             }
         }
     }
@@ -168,5 +123,30 @@ public class GameView {
         if(textArea != null){
             textArea.appendText("\n" + message);
         }
+    }
+
+    private String getResourcePath(String path){
+        URL resource = getClass().getResource(path);
+        return resource != null ? resource.toExternalForm() : "";
+    }
+
+    private String resolveImagePath(Occupant occupant){
+        if(occupant instanceof Obstacle){
+            return getResourcePath("/images/wall.png");
+        }
+        else if(occupant instanceof Player){
+            return getResourcePath("/images/player.png");
+        }
+        else if (occupant instanceof NPC) {
+            return getResourcePath("/images/NPC.png");
+        }
+        else if (occupant instanceof Collectible) {
+            return getResourcePath("/images/collectible.png");
+        }
+        return null;
+    }
+
+    private Pane createTilePane(Occupant occupant){
+
     }
 }
