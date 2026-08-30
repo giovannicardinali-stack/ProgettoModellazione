@@ -21,6 +21,7 @@ public class GameView {
     private final GameController gamecontroller;
 
     private GridPane mapArea;
+    private TextArea textArea;
 
 
 
@@ -71,7 +72,7 @@ public class GameView {
         downBar.setStyle("-fx-background-color: #222222;");
 
         //text for in-game messages
-        TextArea textArea = new TextArea();
+        textArea = new TextArea();
         textArea.setPrefHeight(100);
         textArea.setEditable(false);
         textArea.setText("Benvenuto");
@@ -160,5 +161,11 @@ public class GameView {
             }
         }
 
+    }
+
+    public void viewMessage(String message){
+        if(textArea != null){
+            textArea.appendText("\n" + message);
+        }
     }
 }

@@ -21,7 +21,11 @@ public class GameController {
     }
 
     public void handleInteraction(){
-        interactionHandler.handleInteraction();
+        String message = interactionHandler.handleInteraction();
+
+        if(message != null && gameView != null){
+            gameView.viewMessage(message);
+        }
     }
 
     public void onDirectionChange(Direction direction){
