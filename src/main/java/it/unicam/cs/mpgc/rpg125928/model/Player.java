@@ -1,13 +1,26 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Player extends Occupant {
+
+
     private int power;
     private int health;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "player_id")
     private List<Collectible> inventory;
     private int inventorySize;
+
+
+    public Player() {
+
+    }
 
     public Player(String name, boolean isSolid,  int power, int health, int inventorySize) {
         super(name, isSolid);
@@ -35,7 +48,6 @@ public class Player extends Occupant {
             return true;
         }
         else {
-            System.out.println("inventario pieno");
             return false;
         }
     }

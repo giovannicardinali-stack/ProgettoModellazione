@@ -1,5 +1,9 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Coordinates {
     private int x;
     private int y;
@@ -9,6 +13,8 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+
+    public Coordinates() {}
 
     public int getX() { return x; }
 

@@ -2,9 +2,11 @@ package it.unicam.cs.mpgc.rpg125928;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.model.*;
+import it.unicam.cs.mpgc.rpg125928.util.HibernateUtil;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.hibernate.SessionFactory;
 
 public class Main extends Application {
 
@@ -14,15 +16,20 @@ public class Main extends Application {
         MapGenerator mapGenerator = new MapGenerator();
 
         GameBoard gameBoard = mapGenerator.generateMap();
+        System.out.println("Elementi totali generati nella mappa: " + gameBoard.getGameMap().size());
 
         Coordinates playerCoordinates = new Coordinates(3,11);
+
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
+        GamePersistenceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory);
 
         Player player = (Player) gameBoard.getOccupant(playerCoordinates);
 
         MovementHandler movementHandler = new MovementHandler(playerCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
 
-        GameController gameController = new GameController(movementHandler, interactionHandler, gameBoard);
+        GameController gameController = new GameController(movementHandler, interactionHandler, gameBoard, gamePersistenceManager);
 
         GameView view = new GameView(primaryStage, gameController);
         gameController.setGameView(view);

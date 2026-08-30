@@ -8,13 +8,16 @@ public class GameController {
     private final InteractionHandler interactionHandler;
     private final GameBoard gameboard;
     private GameView gameView;
+    private GamePersistenceManager gamePersistenceManager;
 
     public  GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
-                           GameBoard gameboard) {
+                           GameBoard gameboard,
+                           GamePersistenceManager gamePersistenceManager) {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
         this.gameboard = gameboard;
+        this.gamePersistenceManager = gamePersistenceManager;
     }
     public void setGameView(GameView gameView) {
         this.gameView = gameView;
@@ -39,6 +42,15 @@ public class GameController {
         }
 
 
+    }
+
+    public void saveCurrentGame() {
+        if (this.gamePersistenceManager != null && this.gameboard != null) {
+            gamePersistenceManager.saveGame(this.gameboard);
+            if (this.gameView != null) {
+                gameView.viewMessage("Partita salvata con successo!");
+            }
+        }
     }
 
     public GameBoard getGameboard() {

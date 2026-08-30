@@ -58,6 +58,33 @@ public class GameView {
         primaryStage.show();
     }
 
+//    public void showGameView(){
+//
+//        BorderPane gameRoot = new BorderPane();
+//
+//        initMapArea();
+//
+//        //putting the elements in the main BorderPane
+//        gameRoot.setCenter(mapArea);
+//        gameRoot.setBottom(downBar());
+//
+//        Scene gameScene = new Scene(gameRoot,900,700);
+//
+//        InputController inputController = new InputController(gamecontroller);
+//        inputController.setUpListeners(gameScene);
+//
+//        primaryStage.setTitle("");
+//        primaryStage.setScene(gameScene);
+//
+//        primaryStage.show();
+//        gameScene.getRoot().requestFocus();
+//
+//        if(gamecontroller != null && gamecontroller.getGameboard() != null) {
+//            updateMapView(gamecontroller.getGameboard());
+//        }
+//
+//    }
+
     public void showGameView(){
 
         BorderPane gameRoot = new BorderPane();
@@ -79,8 +106,17 @@ public class GameView {
         primaryStage.show();
         gameScene.getRoot().requestFocus();
 
-        if(gamecontroller != null && gamecontroller.getGameboard() != null) {
-            updateMapView(gamecontroller.getGameboard());
+        // CONTROLLO DI DEBUG
+        if(gamecontroller != null) {
+            System.out.println("GameController è presente.");
+            if(gamecontroller.getGameboard() != null) {
+                System.out.println("Gameboard presente con elementi: " + gamecontroller.getGameboard().getGameMap().size());
+                updateMapView(gamecontroller.getGameboard());
+            } else {
+                System.out.println("ERRORE: gamecontroller.getGameboard() è NULL!");
+            }
+        } else {
+            System.out.println("ERRORE: gamecontroller è NULL!");
         }
 
     }
@@ -91,12 +127,19 @@ public class GameView {
         mapArea.setHgap(0);
         mapArea.setVgap(0);
 
-        URL resource = getClass().getResource("/images/floor.jpg");
-        String floorURL = resource != null ? resource.toExternalForm() : "";
 
-        mapArea.setStyle("-fx-background-color: #1e1e1e;" +
-                "-fx-background-image: url('" + floorURL + "');" +
-                "-fx-background-repeat: repeat;");
+        mapArea.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        URL resource = getClass().getResource("/images/floor.jpg");
+
+        if (resource != null) {
+            String floorURL = resource.toExternalForm();
+            mapArea.setStyle("-fx-background-color: #1e1e1e;" +
+                    "-fx-background-image: url('" + floorURL + "');" +
+                    "-fx-background-repeat: repeat;");
+        } else {
+            mapArea.setStyle("-fx-background-color: #1e1e1e;");
+        }
     }
 
     private VBox downBar(){
@@ -119,6 +162,8 @@ public class GameView {
         for(var entry : gameBoard.getGameMap().entrySet()){
             Coordinates coordinates = entry.getKey();
             Occupant occupant = entry.getValue();
+
+            System.out.println("Disegno " + occupant.getClass().getSimpleName() + " a X=" + coordinates.getX() + ", Y=" + coordinates.getY());
 
             Pane tilePane = tileRenderer.createTilePane(occupant);
             if(tilePane != null){

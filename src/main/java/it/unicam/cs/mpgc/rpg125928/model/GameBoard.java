@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import jakarta.persistence.*;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Configurazione della connessione al Database (Esempio con H2 in modalità file o memoria) -->
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:./rpgdb;AUTO_SERVER=TRUE</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"></property>
+
+        <!-- Dialetto SQL di Hibernate -->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+
+        <!-- Strategia di gestione dello schema del Database (update crea/aggiorna le tabelle in automatico) -->
+        <property name="hbm2ddl.auto">update</property>
+
+        <!-- Mostra le query SQL sulla console (utile per il debug) -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- Registrazione delle classi entità che Hibernate deve gestire -->
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Player"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.NPC"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Collectible"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Obstacle"/>
+        <!-- Se hai altre entità figlie specifiche (es. Player, Monster), aggiungile qui sotto: -->
+        <!-- <mapping class="it.unicam.cs.mpgc.rpg125928.model.Player"/> -->
+
+    </session-factory>
+</hibernate-configuration>
