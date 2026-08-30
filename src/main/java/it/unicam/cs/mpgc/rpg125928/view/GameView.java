@@ -28,11 +28,14 @@ public class GameView {
     private GridPane mapArea;
     private TextArea textArea;
 
+    private final TileRenderer tileRenderer;
+
 
 
     public GameView(Stage primaryStage, GameController gamecontroller) {
         this.primaryStage = primaryStage;
         this.gamecontroller = gamecontroller;
+        this.tileRenderer = new TileRenderer(tileSize);
     }
 
     public void showMainMenu(){
@@ -88,7 +91,9 @@ public class GameView {
         mapArea.setHgap(0);
         mapArea.setVgap(0);
 
-        String floorURL = getResourcePath("/images/floor.jpg");
+        URL resource = getClass().getResource("/images/floor.jpg");
+        String floorURL = resource != null ? resource.toExternalForm() : "";
+
         mapArea.setStyle("-fx-background-color: #1e1e1e;" +
                 "-fx-background-image: url('" + floorURL + "');" +
                 "-fx-background-repeat: repeat;");
@@ -115,7 +120,7 @@ public class GameView {
             Coordinates coordinates = entry.getKey();
             Occupant occupant = entry.getValue();
 
-            Pane tilePane = createTilePane(occupant);
+            Pane tilePane = tileRenderer.createTilePane(occupant);
             if(tilePane != null){
                 mapArea.add(tilePane,coordinates.getX(),coordinates.getY());
             }
@@ -126,45 +131,5 @@ public class GameView {
         if(textArea != null){
             textArea.appendText("\n" + message);
         }
-    }
-
-    private String getResourcePath(String path){
-        URL resource = getClass().getResource(path);
-        return resource != null ? resource.toExternalForm() : "";
-    }
-
-    private String resolveImagePath(Occupant occupant){
-        if(occupant instanceof Obstacle){
-            return getResourcePath("/images/wall.png");
-        }
-        else if(occupant instanceof Player){
-            return getResourcePath("/images/player.png");
-        }
-        else if (occupant instanceof NPC) {
-            return getResourcePath("/images/NPC.png");
-        }
-        else if (occupant instanceof Collectible) {
-            return getResourcePath("/images/collectible.png");
-        }
-        return null;
-    }
-
-    private Pane createTilePane(Occupant occupant){
-        String imagePath = resolveImagePath(occupant);
-
-        if(imagePath == null){
-            return null;
-        }
-
-        Pane pane = new Pane();
-        pane.setPrefSize(tileSize,tileSize);
-        pane.setMinSize(tileSize,tileSize);
-        pane.setMaxSize(tileSize,tileSize);
-
-        pane.setStyle("-fx-background-image: url('" + imagePath + "');" +
-                "-fx-background-size: 100% 100%;" +
-                "-fx-background-repeat: no-repeat;");
-
-        return pane;
     }
 }
