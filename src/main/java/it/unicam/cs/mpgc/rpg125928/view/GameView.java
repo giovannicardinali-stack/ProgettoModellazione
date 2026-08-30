@@ -59,34 +59,11 @@ public class GameView {
 
         BorderPane gameRoot = new BorderPane();
 
-        //center zone: map
-        mapArea = new GridPane();
-        mapArea.setAlignment(Pos.CENTER);
-
-        mapArea.setHgap(0);
-        mapArea.setVgap(0);
-
-        mapArea.setStyle("-fx-background-color: #1e1e1e;" +
-                "-fx-background-image: url('" + getClass().getResource("/images/floor.jpg").toExternalForm() + "');" +
-                "-fx-background-repeat: repeat;");
-
-        //downBar
-        VBox downBar = new VBox(5);
-        downBar.setPadding(new Insets(10));
-        downBar.setStyle("-fx-background-color: #222222;");
-
-        //text for in-game messages
-        textArea = new TextArea();
-        textArea.setPrefHeight(100);
-        textArea.setEditable(false);
-        textArea.setText("Benvenuto");
-
-        downBar.getChildren().add(textArea);
+        initMapArea();
 
         //putting the elements in the main BorderPane
         gameRoot.setCenter(mapArea);
-        gameRoot.setBottom(downBar);
-
+        gameRoot.setBottom(downBar());
 
         Scene gameScene = new Scene(gameRoot,900,700);
 
@@ -103,6 +80,32 @@ public class GameView {
             updateMapView(gamecontroller.getGameboard());
         }
 
+    }
+
+    public void initMapArea(){
+        mapArea = new GridPane();
+        mapArea.setAlignment(Pos.CENTER);
+        mapArea.setHgap(0);
+        mapArea.setVgap(0);
+
+        String floorURL = getResourcePath("/images/floor.jpg");
+        mapArea.setStyle("-fx-background-color: #1e1e1e;" +
+                "-fx-background-image: url('" + floorURL + "');" +
+                "-fx-background-repeat: repeat;");
+    }
+
+    private VBox downBar(){
+        VBox downBar = new VBox(5);
+        downBar.setPadding(new Insets(10));
+        downBar.setStyle("-fx-background-color: #222222;");
+
+        textArea = new TextArea();
+        textArea.setPrefHeight(100);
+        textArea.setEditable(false);
+        textArea.setText("Benvenuto");
+
+        downBar.getChildren().add(textArea);
+        return downBar;
     }
 
     public void updateMapView(GameBoard gameBoard){
@@ -149,7 +152,7 @@ public class GameView {
     private Pane createTilePane(Occupant occupant){
         String imagePath = resolveImagePath(occupant);
 
-        if(imagePath != null){
+        if(imagePath == null){
             return null;
         }
 
