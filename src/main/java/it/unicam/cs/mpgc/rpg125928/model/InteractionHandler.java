@@ -3,8 +3,8 @@ package it.unicam.cs.mpgc.rpg125928.model;
 public class InteractionHandler {
 
     private final MovementHandler movementHandler;
-    Player player;
-    GameBoard gameBoard;
+    private final Player player;
+    private final GameBoard gameBoard;
 
     public InteractionHandler(MovementHandler movementHandler,  Player player, GameBoard gameBoard) {
         this.movementHandler = movementHandler;
@@ -21,50 +21,57 @@ public class InteractionHandler {
         Occupant target = gameBoard.getOccupant(targetCoordinates);
 
         if(target instanceof NPC nearNPC){
-            if(nearNPC.isHostile()){
-                return combatInteraction(nearNPC);
-            }
-            else {
-                String dialogue = nearNPC.getDialogue();
-                return nearNPC.getName() + ": " + dialogue;
-            }
+            return handleNPCInteraction(nearNPC);
         }
-        else if(target instanceof Collectible nearItem){
-            if(player.addItem(nearItem)){
-                gameBoard.removeOccupant(targetCoordinates);
-                return "Oggetto raccolto: " + nearItem.getName();
-            }
+
+        if (target instanceof Collectible nearItem) {
+            return handleCollectibleInteraction(nearItem, targetCoordinates);
         }
-        return null;
+
+        return "Interazione non valida.";
     }
 
     public String combatInteraction(NPC enemy){
 
-        if(player.getPower() >= enemy.getPower()){
-            int damage = player.getPower();
-            int healthAfterAttack = enemy.getHealth() - damage;
+        if(player.getPower() < enemy.getPower()){
+            return "La tua forza è inferiore o uguale a quella di "  + enemy.getName() + "! Impossibile attaccare.";
 
-            enemy.setHealth(healthAfterAttack);
+        }
 
-            if(enemy.getHealth() <= 0){
+        int damage = player.getPower();
+        int healthAfterAttack = enemy.getHealth() - damage;
 
-                Coordinates enemyCoordinates = gameBoard.getOccupantCoordinates(enemy);
+        enemy.setHealth(healthAfterAttack);
 
-                if(enemyCoordinates != null){
-                    gameBoard.removeOccupant(enemyCoordinates);
-                }
-                return "Hai sconfitto " + enemy.getName();
+        if(enemy.getHealth() <= 0){
 
+            Coordinates enemyCoordinates = gameBoard.getOccupantCoordinates(enemy);
+
+            if(enemyCoordinates != null){
+                gameBoard.removeOccupant(enemyCoordinates);
             }
-            else {
-                return "Hai attaccato " + enemy.getName() +
-                        " infliggendo " + damage +
-                        " danni. (Salute nemico: " + enemy.getHealth() + ")";
-            }
+            return "Hai sconfitto " + enemy.getName();
+
         }
         else {
-            return "La tua forza è inferiore o uguale a quella di " +
-                    enemy.getName() + "! Impossibile attaccare.";
+            return "Hai attaccato " + enemy.getName() +
+                    " infliggendo " + damage +
+                    " danni. (Salute nemico: " + enemy.getHealth() + ")";
         }
+    }
+
+    private String handleNPCInteraction(NPC nearNPC){
+        if(nearNPC.isHostile()){
+            return  combatInteraction(nearNPC);
+        }
+        return nearNPC.getName() + ": " + nearNPC.getDialogue();
+    }
+
+    private String handleCollectibleInteraction(Collectible nearItem, Coordinates coordinates){
+        if (player.addItem(nearItem)) {
+            gameBoard.removeOccupant(coordinates);
+            return "Oggetto raccolto: " + nearItem.getName();
+        }
+        return "Inventario pieno! Impossibile raccogliere " + nearItem.getName();
     }
 }
