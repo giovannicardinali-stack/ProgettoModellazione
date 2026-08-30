@@ -29,6 +29,15 @@ public class GameBoard {
 
     }
 
+    public Coordinates getOccupantCoordinates(Occupant occupant) {
+        for (var entry : gameMap.entrySet()) {
+            if (entry.getValue().equals(occupant)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
     public Occupant getOccupant(Coordinates coordinates) {
         return gameMap.get(coordinates);
     }

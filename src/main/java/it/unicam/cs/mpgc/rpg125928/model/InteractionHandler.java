@@ -22,8 +22,7 @@ public class InteractionHandler {
 
         if(target instanceof NPC nearNPC){
             if(nearNPC.isHostile()){
-                combatInteraction(nearNPC);
-                return "Inizia il combattimento con " + nearNPC.getName() + "!";
+                return combatInteraction(nearNPC);
             }
             else {
                 String dialogue = nearNPC.getDialogue();
@@ -39,7 +38,33 @@ public class InteractionHandler {
         return null;
     }
 
-    public void combatInteraction(NPC enemy){
-        //todo combat logic
+    public String combatInteraction(NPC enemy){
+
+        if(player.getPower() >= enemy.getPower()){
+            int damage = player.getPower();
+            int healthAfterAttack = enemy.getHealth() - damage;
+
+            enemy.setHealth(healthAfterAttack);
+
+            if(enemy.getHealth() <= 0){
+
+                Coordinates enemyCoordinates = gameBoard.getOccupantCoordinates(enemy);
+
+                if(enemyCoordinates != null){
+                    gameBoard.removeOccupant(enemyCoordinates);
+                }
+                return "Hai sconfitto " + enemy.getName();
+
+            }
+            else {
+                return "Hai attaccato " + enemy.getName() +
+                        " infliggendo " + damage +
+                        " danni. (Salute nemico: " + enemy.getHealth() + ")";
+            }
+        }
+        else {
+            return "La tua forza è inferiore o uguale a quella di " +
+                    enemy.getName() + "! Impossibile attaccare.";
+        }
     }
 }

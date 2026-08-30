@@ -25,7 +25,7 @@ public class MapGenerator {
         Player player = new Player("player1", true, 10, 10, 4);
         gameBoard.addOccupant(new Coordinates(3, 11), player);
 
-        NPC npc = new NPC("enemy1", true, 8, 10, true, "");
+        NPC npc = new NPC("enemy1", true, 8, 5, true, "");
         gameBoard.addOccupant(new Coordinates(11, 3), npc);
 
         return gameBoard;
