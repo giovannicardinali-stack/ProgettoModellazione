@@ -22,17 +22,12 @@ public class NPC extends Occupant{
 
     public int getPower() { return power; }
 
-    public void setPower(int power) { this.power = power; }
-
     public int getHealth() { return health; }
 
     public void setHealth(int health) { this.health = health; }
 
     public boolean isHostile() { return isHostile; }
 
-    public void setIsHostile(boolean isHostile) { this.isHostile = isHostile; }
-
     public String getDialogue() { return dialogue; }
 
-    public void setDialogue(String dialogue) { this.dialogue = dialogue; }
 }

@@ -26,7 +26,6 @@ public class GameBoard {
         if(!gameMap.containsKey(coordinates)) {
             gameMap.put(coordinates, occupant);
         }
-
     }
 
     public Coordinates getOccupantCoordinates(Occupant occupant) {
