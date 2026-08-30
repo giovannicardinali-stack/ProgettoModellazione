@@ -147,6 +147,21 @@ public class GameView {
     }
 
     private Pane createTilePane(Occupant occupant){
+        String imagePath = resolveImagePath(occupant);
 
+        if(imagePath != null){
+            return null;
+        }
+
+        Pane pane = new Pane();
+        pane.setPrefSize(tileSize,tileSize);
+        pane.setMinSize(tileSize,tileSize);
+        pane.setMaxSize(tileSize,tileSize);
+
+        pane.setStyle("-fx-background-image: url('" + imagePath + "');" +
+                "-fx-background-size: 100% 100%;" +
+                "-fx-background-repeat: no-repeat;");
+
+        return pane;
     }
 }
