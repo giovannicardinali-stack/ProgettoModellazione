@@ -77,12 +77,14 @@ public class GameView {
         textArea.setEditable(false);
         textArea.setText("Benvenuto");
 
+        downBar.getChildren().add(textArea);
+
         //putting the elements in the main BorderPane
         gameRoot.setCenter(mapArea);
         gameRoot.setBottom(downBar);
 
 
-        Scene gameScene = new Scene(gameRoot,900,600);
+        Scene gameScene = new Scene(gameRoot,900,700);
 
         InputController inputController = new InputController(gamecontroller);
         inputController.setUpListeners(gameScene);
@@ -160,7 +162,6 @@ public class GameView {
 
             }
         }
-
     }
 
     public void viewMessage(String message){
