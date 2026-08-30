@@ -4,9 +4,9 @@ import it.unicam.cs.mpgc.rpg125928.model.*;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
 
 public class GameController {
-    MovementHandler movementHandler;
-    InteractionHandler interactionHandler;
-    GameBoard gameboard;
+    private final MovementHandler movementHandler;
+    private final InteractionHandler interactionHandler;
+    private final GameBoard gameboard;
     private GameView gameView;
 
     public  GameController(MovementHandler movementHandler,
@@ -30,13 +30,14 @@ public class GameController {
 
     public void onDirectionChange(Direction direction){
 
-        movementHandler.movePlayer(direction);
+        boolean moved = movementHandler.movePlayer(direction);
 
-        if(gameView != null){
-            gameView.updateMapView(gameboard);
+        if(moved){
+            if(gameView != null){
+                gameView.updateMapView(gameboard);
+            }
         }
 
-        Coordinates newPosition = movementHandler.getPlayerCoordinates();
 
     }
 

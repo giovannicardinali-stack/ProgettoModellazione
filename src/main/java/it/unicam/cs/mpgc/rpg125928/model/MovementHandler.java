@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg125928.model;
 
 public class MovementHandler {
     private Coordinates playerCoordinates;
-    private GameBoard gameBoard;
+    private final GameBoard gameBoard;
 
     public MovementHandler(Coordinates playerCoordinates, GameBoard gameBoard) {
         this.playerCoordinates = playerCoordinates;
@@ -13,22 +13,21 @@ public class MovementHandler {
         return playerCoordinates;
     }
 
-    public void movePlayer(Direction direction){
+    public boolean movePlayer(Direction direction){
 
         Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
 
-        if(gameBoard.cellIsEmpty(targetCoordinates)){
-
-            Occupant player = gameBoard.getOccupant(playerCoordinates);
-            gameBoard.getGameMap().remove(playerCoordinates);
-
-            playerCoordinates = targetCoordinates;
-
-            gameBoard.addOccupant(playerCoordinates, player);
+        if (!gameBoard.cellIsEmpty(targetCoordinates)) {
+            return false;
         }
-        else{
-            System.out.println("La cella è occupata o non valida...");
-        }
+
+        Occupant player = gameBoard.getOccupant(playerCoordinates);
+        gameBoard.getGameMap().remove(playerCoordinates);
+
+        playerCoordinates = targetCoordinates;
+
+        gameBoard.addOccupant(playerCoordinates, player);
+        return true;
     }
 
     public Coordinates getAdjacentCoordinates(Coordinates currentCoordinates, Direction direction){
