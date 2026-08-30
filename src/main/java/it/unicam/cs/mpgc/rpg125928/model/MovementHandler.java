@@ -56,4 +56,8 @@ public class MovementHandler {
         }
         return null;
     }
+
+    public void setPlayerCoordinates(Coordinates playerCoordinates) {
+        this.playerCoordinates = playerCoordinates;
+    }
 }

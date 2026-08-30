@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class GamePersistenceManager {
 
@@ -17,24 +18,42 @@ public class GamePersistenceManager {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
+            List<Occupant> savedOccupants = session.createQuery("FROM Occupant", Occupant.class).getResultList();
+            Set<Coordinates> activeCoords = gameBoard.getGameMap().keySet();
+
+            for (Occupant saved : savedOccupants) {
+                if (!activeCoords.contains(saved.getCoordinates())) {
+                    session.remove(saved);
+                }
+            }
+
+            session.flush();
+
             for (Map.Entry<Coordinates, Occupant> entry : gameBoard.getGameMap().entrySet()) {
                 Coordinates coords = entry.getKey();
                 Occupant occupant = entry.getValue();
 
-                if (!occupant.getName().equalsIgnoreCase("Wall")) {
+                if (occupant != null) {
                     occupant.setCoordinates(coords);
-                    session.merge(occupant);
+                    session.merge(occupant); // Gestisce Player e NPC senza corrompere le collezioni
                 }
             }
 
             session.getTransaction().commit();
-            System.out.println("Partita salvata correttamente sul database!");
+            System.out.println("Partita salvata e database sincronizzato correttamente!");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public GameBoard loadGame(int mapSize) {
+    public GameBoard loadGame() {
         MapGenerator mapGenerator = new MapGenerator();
-        GameBoard gameBoard = mapGenerator.generateMap();
+
+        GameBoard gameBoard = new GameBoard(15);
+
+
+        gameBoard = mapGenerator.generateMap();
+        gameBoard.getGameMap().values().removeIf(occupant -> occupant instanceof Player || occupant instanceof NPC);
 
         try (Session session = sessionFactory.openSession()) {
             List<Occupant> occupants = session.createQuery("FROM Occupant", Occupant.class).getResultList();
@@ -42,11 +61,14 @@ public class GamePersistenceManager {
             for (Occupant occupant : occupants) {
                 Coordinates coords = occupant.getCoordinates();
                 if (coords != null) {
-                    gameBoard.addOccupant(coords, occupant);
+
+                    gameBoard.getGameMap().put(coords, occupant);
                 }
             }
 
             System.out.println("Partita caricata e board ricostruita con successo!");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return gameBoard;

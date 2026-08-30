@@ -6,22 +6,23 @@ public class InteractionHandler {
     private final Player player;
     private final GameBoard gameBoard;
 
-    public InteractionHandler(MovementHandler movementHandler,  Player player, GameBoard gameBoard) {
+    public InteractionHandler(MovementHandler movementHandler, Player player, GameBoard gameBoard) {
         this.movementHandler = movementHandler;
         this.player = player;
         this.gameBoard = gameBoard;
     }
 
-    public String handleInteraction(){
+    public String handleInteraction() {
         Coordinates targetCoordinates = movementHandler.getAdjacentOccupantCoordinates();
 
-        if(targetCoordinates == null){
+        if (targetCoordinates == null) {
             return "non c'è nulla con cui interagire nelle vicinanze...";
         }
         Occupant target = gameBoard.getOccupant(targetCoordinates);
 
-        if(target instanceof NPC nearNPC){
-            return handleNPCInteraction(nearNPC);
+        if (target instanceof NPC nearNPC) {
+            // Passiamo anche le coordinate!
+            return handleNPCInteraction(nearNPC, targetCoordinates);
         }
 
         if (target instanceof Collectible nearItem) {
@@ -31,11 +32,10 @@ public class InteractionHandler {
         return "Interazione non valida.";
     }
 
-    public String combatInteraction(NPC enemy){
+    public String combatInteraction(NPC enemy, Coordinates enemyCoordinates) {
 
-        if(player.getPower() < enemy.getPower()){
-            return "La tua forza è inferiore o uguale a quella di "  + enemy.getName() + "! Impossibile attaccare.";
-
+        if (player.getPower() < enemy.getPower()) {
+            return "La tua forza è inferiore o uguale a quella di " + enemy.getName() + "! Impossibile attaccare.";
         }
 
         int damage = player.getPower();
@@ -43,31 +43,28 @@ public class InteractionHandler {
 
         enemy.setHealth(healthAfterAttack);
 
-        if(enemy.getHealth() <= 0){
-
-            Coordinates enemyCoordinates = gameBoard.getOccupantCoordinates(enemy);
-
-            if(enemyCoordinates != null){
+        if (enemy.getHealth() <= 0) {
+            // Usiamo direttamente le coordinate passate anziché cercarle
+            if (enemyCoordinates != null) {
                 gameBoard.removeOccupant(enemyCoordinates);
             }
             return "Hai sconfitto " + enemy.getName();
 
-        }
-        else {
+        } else {
             return "Hai attaccato " + enemy.getName() +
                     " infliggendo " + damage +
                     " danni. (Salute nemico: " + enemy.getHealth() + ")";
         }
     }
 
-    private String handleNPCInteraction(NPC nearNPC){
-        if(nearNPC.isHostile()){
-            return  combatInteraction(nearNPC);
+    private String handleNPCInteraction(NPC nearNPC, Coordinates coordinates) {
+        if (nearNPC.isHostile()) {
+            return combatInteraction(nearNPC, coordinates);
         }
         return nearNPC.getName() + ": " + nearNPC.getDialogue();
     }
 
-    private String handleCollectibleInteraction(Collectible nearItem, Coordinates coordinates){
+    private String handleCollectibleInteraction(Collectible nearItem, Coordinates coordinates) {
         if (player.addItem(nearItem)) {
             gameBoard.removeOccupant(coordinates);
             return "Oggetto raccolto: " + nearItem.getName();

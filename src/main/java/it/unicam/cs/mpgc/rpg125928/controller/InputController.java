@@ -24,6 +24,8 @@ public class InputController {
                 case RIGHT, D -> gameController.onDirectionChange(Direction.RIGHT);
                 case E, SPACE -> gameController.handleInteraction();
 
+                case F5 -> gameController.saveCurrentGame();
+
                 default -> {
 
                 }

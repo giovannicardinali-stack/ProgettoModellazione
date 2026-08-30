@@ -43,47 +43,28 @@ public class GameView {
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Button newGameButton = new Button("Nuova Partita");
+        Button loadGameButton = new Button("Carica Partita"); // <-- Nuovo pulsante
         Button exitButton = new Button("Exit");
 
         newGameButton.setOnAction(e -> showGameView());
+
+
+        loadGameButton.setOnAction(e -> {
+            showGameView();             // Prima crea la schermata di gioco e inizializza la mapArea
+            gamecontroller.loadGame();  // Poi carica i dati ed esegue l'update della vista
+        });
+
         exitButton.setOnAction(e -> primaryStage.close());
 
         VBox root = new VBox(15);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(titleLabel,newGameButton,exitButton);
+        root.getChildren().addAll(titleLabel, newGameButton, loadGameButton, exitButton);
 
         Scene scene = new Scene(root,400,300);
 
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-//    public void showGameView(){
-//
-//        BorderPane gameRoot = new BorderPane();
-//
-//        initMapArea();
-//
-//        //putting the elements in the main BorderPane
-//        gameRoot.setCenter(mapArea);
-//        gameRoot.setBottom(downBar());
-//
-//        Scene gameScene = new Scene(gameRoot,900,700);
-//
-//        InputController inputController = new InputController(gamecontroller);
-//        inputController.setUpListeners(gameScene);
-//
-//        primaryStage.setTitle("");
-//        primaryStage.setScene(gameScene);
-//
-//        primaryStage.show();
-//        gameScene.getRoot().requestFocus();
-//
-//        if(gamecontroller != null && gamecontroller.getGameboard() != null) {
-//            updateMapView(gamecontroller.getGameboard());
-//        }
-//
-//    }
 
     public void showGameView(){
 
@@ -119,6 +100,12 @@ public class GameView {
             System.out.println("ERRORE: gamecontroller è NULL!");
         }
 
+    }
+
+    public void requestFocusOnGame() {
+        if (primaryStage.getScene() != null && primaryStage.getScene().getRoot() != null) {
+            primaryStage.getScene().getRoot().requestFocus();
+        }
     }
 
     public void initMapArea(){
@@ -163,7 +150,9 @@ public class GameView {
             Coordinates coordinates = entry.getKey();
             Occupant occupant = entry.getValue();
 
-            System.out.println("Disegno " + occupant.getClass().getSimpleName() + " a X=" + coordinates.getX() + ", Y=" + coordinates.getY());
+            if(occupant == null) {
+                continue;
+            }
 
             Pane tilePane = tileRenderer.createTilePane(occupant);
             if(tilePane != null){

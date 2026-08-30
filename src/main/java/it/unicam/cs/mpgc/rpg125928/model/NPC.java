@@ -1,5 +1,10 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "occupants")
 public class NPC extends Occupant{
 
     private int power;
@@ -15,6 +20,8 @@ public class NPC extends Occupant{
         this.isHostile = isHostile;
         this.dialogue = dialogue;
     }
+
+    public NPC() {}
 
     public String getName(){
         return this.name;
