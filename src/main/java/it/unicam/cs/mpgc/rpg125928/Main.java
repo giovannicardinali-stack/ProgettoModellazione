@@ -13,10 +13,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
 
-        MapGenerator mapGenerator = new MapGenerator();
+        MapGenerator mapGenerator = new DefaultMapGenerator();
 
         GameBoard gameBoard = mapGenerator.generateMap();
-        System.out.println("Elementi totali generati nella mappa: " + gameBoard.getGameMap().size());
 
         Coordinates playerCoordinates = new Coordinates(3,11);
 

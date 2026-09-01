@@ -44,7 +44,7 @@ public class GamePersistenceManager {
     }
 
     public GameBoard loadGame() {
-        MapGenerator mapGenerator = new MapGenerator();
+        MapGenerator mapGenerator = new DefaultMapGenerator();
 
         GameBoard gameBoard = new GameBoard(15);
 
