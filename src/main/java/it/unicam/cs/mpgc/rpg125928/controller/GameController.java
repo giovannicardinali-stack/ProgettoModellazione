@@ -1,8 +1,8 @@
 package it.unicam.cs.mpgc.rpg125928.controller;
 
 import it.unicam.cs.mpgc.rpg125928.model.*;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Player;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
 
 import java.util.Map;

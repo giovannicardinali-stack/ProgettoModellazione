@@ -23,13 +23,13 @@
         <property name="format_sql">true</property>
 
         <!-- Registrazione delle classi entità che Hibernate deve gestire -->
-        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant"/>
-        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant.Player"/>
-        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant.NPC"/>
-        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant.Collectible"/>
-        <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant.Obstacle"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Player"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.NPC"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Collectible"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Obstacle"/>
         <!-- Se hai altre entità figlie specifiche (es. Player, Monster), aggiungile qui sotto: -->
-        <!-- <mapping class="it.unicam.cs.mpgc.rpg125928.model.Occupant.Player"/> -->
+        <!-- <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Player"/> -->
 
     </session-factory>
 </hibernate-configuration>

@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125928.model.Occupant;
+package it.unicam.cs.mpgc.rpg125928.model.occupant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

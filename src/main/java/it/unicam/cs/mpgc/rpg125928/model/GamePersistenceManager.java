@@ -1,8 +1,9 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.NPC;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Player;
+import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.MapGenerator;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import java.util.List;

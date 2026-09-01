@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 
 import java.util.HashMap;
 import java.util.Map;

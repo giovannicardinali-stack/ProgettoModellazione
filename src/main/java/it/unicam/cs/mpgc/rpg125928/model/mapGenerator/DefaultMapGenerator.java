@@ -1,8 +1,10 @@
-package it.unicam.cs.mpgc.rpg125928.model;
+package it.unicam.cs.mpgc.rpg125928.model.mapGenerator;
 
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.NPC;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Obstacle;
-import it.unicam.cs.mpgc.rpg125928.model.Occupant.Player;
+import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
+import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Obstacle;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
 public class DefaultMapGenerator implements MapGenerator {
 
