@@ -12,9 +12,11 @@ import java.util.Set;
 public class GamePersistenceManager {
 
     private final SessionFactory sessionFactory;
+    private MapGenerator mapGenerator;
 
-    public GamePersistenceManager(SessionFactory sessionFactory) {
+    public GamePersistenceManager(SessionFactory sessionFactory, MapGenerator mapGenerator) {
         this.sessionFactory = sessionFactory;
+        this.mapGenerator = mapGenerator;
     }
 
     public void saveGame(GameBoard gameBoard) {
@@ -47,7 +49,6 @@ public class GamePersistenceManager {
     }
 
     public GameBoard loadGame() {
-        MapGenerator mapGenerator = new DefaultMapGenerator();
 
         GameBoard gameBoard = mapGenerator.generateExistantMap();
 
@@ -70,5 +71,9 @@ public class GamePersistenceManager {
         }
 
         return gameBoard;
+    }
+
+    public void setMapGenerator(MapGenerator mapGenerator) {
+        this.mapGenerator = mapGenerator;
     }
 }

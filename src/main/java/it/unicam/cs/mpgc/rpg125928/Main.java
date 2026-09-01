@@ -22,7 +22,7 @@ public class Main extends Application {
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-        GamePersistenceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory);
+        GamePersistenceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory, mapGenerator);
 
         Player player = (Player) gameBoard.getOccupant(playerCoordinates);
 
