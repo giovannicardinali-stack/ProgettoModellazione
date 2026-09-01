@@ -1,5 +1,6 @@
-package it.unicam.cs.mpgc.rpg125928.model;
+package it.unicam.cs.mpgc.rpg125928.model.Occupant;
 
+import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
 import jakarta.persistence.*;
 
 @Entity

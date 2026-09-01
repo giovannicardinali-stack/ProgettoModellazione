@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg125928;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.model.*;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Player;
 import it.unicam.cs.mpgc.rpg125928.util.HibernateUtil;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
 import javafx.application.Application;

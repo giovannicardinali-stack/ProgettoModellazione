@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant;
+
 public class MovementHandler {
     private Coordinates playerCoordinates;
     private final GameBoard gameBoard;

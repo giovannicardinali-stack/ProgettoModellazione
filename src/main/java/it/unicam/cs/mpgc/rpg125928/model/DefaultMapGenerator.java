@@ -1,5 +1,9 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.NPC;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Obstacle;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Player;
+
 public class DefaultMapGenerator implements MapGenerator {
 
     private static final int MAP_SIZE = 15;
@@ -21,7 +25,7 @@ public class DefaultMapGenerator implements MapGenerator {
         }
     }
 
-    public void generatePerimeterWalls(GameBoard gameBoard) {
+    private void generatePerimeterWalls(GameBoard gameBoard) {
         int maxIndex = MAP_SIZE - 1;
         for (int i = 0; i < MAP_SIZE; i++) {
             gameBoard.addOccupant(new Coordinates(i, 0), new Obstacle("Wall", true));
@@ -37,5 +41,15 @@ public class DefaultMapGenerator implements MapGenerator {
 
         NPC npc = new NPC("enemy1", true, 8, 5, true, "");
         gameBoard.addOccupant(new Coordinates(11, 3), npc);
+    }
+
+    @Override
+    public GameBoard generateExistantMap(){
+        GameBoard gameBoard = new GameBoard(MAP_SIZE);
+
+        generatePerimeterWalls(gameBoard);
+        generateInternalWalls(gameBoard);
+
+        return gameBoard;
     }
 }

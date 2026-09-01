@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg125928.view;
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.controller.InputController;
 import it.unicam.cs.mpgc.rpg125928.model.*;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

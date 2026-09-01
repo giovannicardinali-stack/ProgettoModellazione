@@ -1,5 +1,8 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.NPC;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.Occupant.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import java.util.List;
@@ -46,10 +49,8 @@ public class GamePersistenceManager {
     public GameBoard loadGame() {
         MapGenerator mapGenerator = new DefaultMapGenerator();
 
-        GameBoard gameBoard = new GameBoard(15);
+        GameBoard gameBoard = mapGenerator.generateExistantMap();
 
-
-        gameBoard = mapGenerator.generateMap();
         gameBoard.getGameMap().values().removeIf(occupant -> occupant instanceof Player || occupant instanceof NPC);
 
         try (Session session = sessionFactory.openSession()) {
