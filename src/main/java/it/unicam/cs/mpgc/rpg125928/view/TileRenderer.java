@@ -25,18 +25,7 @@ public class TileRenderer {
             pane.setStyle("-fx-background-image: url('" + imagePath + "');" +
                     "-fx-background-size: 100% 100%;" +
                     "-fx-background-repeat: no-repeat;");
-        } else {
-            // Fallback di sicurezza: se l'immagine non si carica, coloriamo la tile
-            // così vediamo subito se il percorso dell'immagine è errato
-            if(occupant instanceof Obstacle){
-                pane.setStyle("-fx-background-color: gray; -fx-border-color: black;");
-            } else if(occupant instanceof Player){
-                pane.setStyle("-fx-background-color: blue; -fx-border-color: black;");
-            } else if(occupant instanceof NPC){
-                pane.setStyle("-fx-background-color: green; -fx-border-color: black;");
-            }
         }
-
         return pane;
     }
 
@@ -54,15 +43,13 @@ public class TileRenderer {
     }
 
     public String getResourcePath(String path){
-        // Cerca partendo dalla radice del classpath usando lo slash iniziale
+
         URL resource = getClass().getResource(path);
         if (resource == null) {
-            // Tentativo alternativo rimuovendo lo slash iniziale
+
             String cleanPath = path.startsWith("/") ? path.substring(1) : path;
             resource = Thread.currentThread().getContextClassLoader().getResource(cleanPath);
         }
-
-        System.out.println("Cerco risorsa: " + path + " -> Trovata: " + (resource != null));
         return resource != null ? resource.toExternalForm() : null;
     }
 }

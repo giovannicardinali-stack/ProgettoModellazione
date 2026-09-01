@@ -26,19 +26,16 @@ public class GamePersistenceManager {
                     session.remove(saved);
                 }
             }
-
             session.flush();
-
             for (Map.Entry<Coordinates, Occupant> entry : gameBoard.getGameMap().entrySet()) {
                 Coordinates coords = entry.getKey();
                 Occupant occupant = entry.getValue();
 
                 if (occupant != null) {
                     occupant.setCoordinates(coords);
-                    session.merge(occupant); // Gestisce Player e NPC senza corrompere le collezioni
+                    session.merge(occupant);
                 }
             }
-
             session.getTransaction().commit();
             System.out.println("Partita salvata e database sincronizzato correttamente!");
         } catch (Exception e) {

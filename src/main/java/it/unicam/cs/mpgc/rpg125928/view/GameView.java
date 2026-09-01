@@ -50,8 +50,8 @@ public class GameView {
 
 
         loadGameButton.setOnAction(e -> {
-            showGameView();             // Prima crea la schermata di gioco e inizializza la mapArea
-            gamecontroller.loadGame();  // Poi carica i dati ed esegue l'update della vista
+            showGameView();
+            gamecontroller.loadGame();
         });
 
         exitButton.setOnAction(e -> primaryStage.close());
@@ -87,17 +87,12 @@ public class GameView {
         primaryStage.show();
         gameScene.getRoot().requestFocus();
 
-        // CONTROLLO DI DEBUG
         if(gamecontroller != null) {
-            System.out.println("GameController è presente.");
             if(gamecontroller.getGameboard() != null) {
-                System.out.println("Gameboard presente con elementi: " + gamecontroller.getGameboard().getGameMap().size());
                 updateMapView(gamecontroller.getGameboard());
             } else {
-                System.out.println("ERRORE: gamecontroller.getGameboard() è NULL!");
             }
         } else {
-            System.out.println("ERRORE: gamecontroller è NULL!");
         }
 
     }

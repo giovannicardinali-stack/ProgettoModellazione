@@ -44,8 +44,6 @@ public class GameController {
                 gameView.updateMapView(gameboard);
             }
         }
-
-
     }
 
     public void saveCurrentGame() {
@@ -62,11 +60,10 @@ public class GameController {
             GameBoard loadedBoard = gamePersistenceManager.loadGame();
 
             if (loadedBoard != null && !loadedBoard.getGameMap().isEmpty()) {
-                // Sostituiamo la board nel controller
+
                 this.gameboard.getGameMap().clear();
                 this.gameboard.getGameMap().putAll(loadedBoard.getGameMap());
 
-                // <-- CERHIAMO IL PLAYER SULLA MAPPA CARICATA E AGGIORNIAMO IL MOVEMENTHANDLER
                 for (Map.Entry<Coordinates, Occupant> entry : this.gameboard.getGameMap().entrySet()) {
                     if (entry.getValue() instanceof Player) {
                         this.movementHandler.setPlayerCoordinates(entry.getKey());

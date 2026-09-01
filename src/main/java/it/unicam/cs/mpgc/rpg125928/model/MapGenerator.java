@@ -17,7 +17,6 @@ public class MapGenerator {
     private void generateInternalWalls(GameBoard gameBoard){
         for (int y = 1; y <= 5; y++) {
             gameBoard.addOccupant(new Coordinates(8, y), new Obstacle("Wall", true));
-            
         }
     }
 
