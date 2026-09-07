@@ -26,7 +26,7 @@ public class InteractionHandler {
         Occupant target = gameBoard.getOccupant(targetCoordinates);
 
         if (target instanceof NPC nearNPC) {
-            // Passiamo anche le coordinate!
+
             return handleNPCInteraction(nearNPC, targetCoordinates);
         }
 

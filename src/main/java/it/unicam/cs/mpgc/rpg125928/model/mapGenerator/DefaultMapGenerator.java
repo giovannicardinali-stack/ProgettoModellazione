@@ -2,6 +2,8 @@ package it.unicam.cs.mpgc.rpg125928.model.mapGenerator;
 
 import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
 import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
+import it.unicam.cs.mpgc.rpg125928.model.PowerEnhancementEffect;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Collectible;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Obstacle;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
@@ -43,6 +45,11 @@ public class DefaultMapGenerator implements MapGenerator {
 
         NPC npc = new NPC("enemy1", true, 8, 5, true, "");
         gameBoard.addOccupant(new Coordinates(11, 3), npc);
+
+        PowerEnhancementEffect powerEffect = new PowerEnhancementEffect(10);
+        Collectible potion = new Collectible("Pozione della Forza", true, "", powerEffect);
+
+        gameBoard.addOccupant(new Coordinates(5, 5), potion);
     }
 
     @Override

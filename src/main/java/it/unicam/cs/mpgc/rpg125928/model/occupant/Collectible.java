@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "collectibles")
 public class Collectible extends Occupant{
 
+    @Transient
     private Effect effect;
     private String description;
 
@@ -30,5 +31,8 @@ public class Collectible extends Occupant{
             return true;
         }
         return false;
+    }
+    public String getName() {
+        return name;
     }
 }

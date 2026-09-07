@@ -60,4 +60,15 @@ public class Player extends Occupant {
         return false;
     }
 
+    public boolean useItem(Collectible item){
+        if(inventory.contains(item)){
+            if(item.use(this)){
+                inventory.remove(item);
+                System.out.println("Hai usato: " + item.getName());
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
