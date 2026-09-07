@@ -1,9 +1,6 @@
 package it.unicam.cs.mpgc.rpg125928.view;
 
-import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
-import it.unicam.cs.mpgc.rpg125928.model.occupant.Obstacle;
-import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
-import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.*;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -41,6 +38,9 @@ public class TileRenderer {
         }
         else if (occupant instanceof NPC) {
             return getResourcePath("/images/NPC.png");
+        }
+        else if (occupant instanceof Collectible) {
+            return getResourcePath("/images/collectible1.png");
         }
         return null;
     }
