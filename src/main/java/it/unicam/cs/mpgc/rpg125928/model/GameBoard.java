@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,5 +50,13 @@ public class GameBoard {
 
     public boolean removeOccupant(Coordinates coordinates) {
         return gameMap.remove(coordinates) != null;
+    }
+
+    public Player getPlayer(){
+        return gameMap.values().stream()
+                .filter(Player.class::isInstance)
+                .map(Player.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 }

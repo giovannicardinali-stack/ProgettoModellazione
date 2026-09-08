@@ -31,7 +31,11 @@ public class Main extends Application {
         MovementHandler movementHandler = new MovementHandler(playerCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
 
-        GameController gameController = new GameController(movementHandler, interactionHandler, gameBoard, gamePersistenceManager);
+        GameController gameController = new GameController(movementHandler
+                , interactionHandler
+                , gameBoard
+                , gamePersistenceManager
+        , player);
 
         GameView view = new GameView(primaryStage, gameController);
         gameController.setGameView(view);

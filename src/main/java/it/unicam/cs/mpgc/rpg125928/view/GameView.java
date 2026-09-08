@@ -3,17 +3,14 @@ package it.unicam.cs.mpgc.rpg125928.view;
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.controller.InputController;
 import it.unicam.cs.mpgc.rpg125928.model.*;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Collectible;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -28,6 +25,11 @@ public class GameView {
 
     private GridPane mapArea;
     private TextArea textArea;
+
+    private VBox leftPanel;
+    private ListView<Collectible> inventoryListView;
+    private Label healthLabel;
+    private Label powerLabel;
 
     private final TileRenderer tileRenderer;
 
@@ -44,7 +46,7 @@ public class GameView {
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Button newGameButton = new Button("Nuova Partita");
-        Button loadGameButton = new Button("Carica Partita"); // <-- Nuovo pulsante
+        Button loadGameButton = new Button("Carica Partita");
         Button exitButton = new Button("Exit");
 
         newGameButton.setOnAction(e -> showGameView());
@@ -73,9 +75,12 @@ public class GameView {
 
         initMapArea();
 
-        //putting the elements in the main BorderPane
         gameRoot.setCenter(mapArea);
         gameRoot.setBottom(downBar());
+
+        Player p = gamecontroller.getPlayer();
+
+        gameRoot.setLeft(createLeftPanel(p));
 
         Scene gameScene = new Scene(gameRoot,900,700);
 
@@ -160,6 +165,90 @@ public class GameView {
     public void viewMessage(String message){
         if(textArea != null){
             textArea.appendText("\n" + message);
+        }
+    }
+
+    private VBox createLeftPanel(Player player) {
+        leftPanel = new VBox(10);
+        leftPanel.setPadding(new Insets(10));
+        leftPanel.setPrefWidth(220);
+        leftPanel.setStyle("-fx-background-color: #2a2a2a; -fx-border-color: #444444; -fx-border-width: 0 1 0 0;");
+
+        Label statsTitle = new Label("STATISTICHE");
+        statsTitle.setStyle("-fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 14px;");
+
+        healthLabel = new Label("Salute: " + player.getHealth());
+        healthLabel.setStyle("-fx-text-fill: #ff5555;");
+
+        powerLabel = new Label("Forza: " + player.getPower());
+        powerLabel.setStyle("-fx-text-fill: #ffb86c;");
+
+        Label invTitle = new Label("INVENTARIO");
+        invTitle.setStyle("-fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 14px;");
+
+        inventoryListView = new ListView<>();
+        inventoryListView.setPrefHeight(300);
+        inventoryListView.setStyle("-fx-control-inner-background: #1e1e1e; -fx-background-color: #1e1e1e;");
+
+        updateInventoryView();
+
+        leftPanel.getChildren().addAll(statsTitle, healthLabel, powerLabel, invTitle, inventoryListView);
+        return leftPanel;
+    }
+
+    public void updateInventoryView(){
+        if(inventoryListView == null || gamecontroller == null){
+            return;
+        }
+
+        Player player = gamecontroller.getPlayer();
+
+        if(player == null){
+            return;
+        }
+
+        inventoryListView.getItems().clear();
+        inventoryListView.getItems().addAll(player.getInventory());
+
+        inventoryListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Collectible item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    HBox box = new HBox(8);
+                    box.setAlignment(Pos.CENTER_LEFT);
+
+                    Label nameLabel = new Label(item.getName());
+                    nameLabel.setStyle("-fx-text-fill: #ffffff;");
+
+                    Button useBtn = new Button("Usa");
+                    useBtn.setStyle("-fx-font-size: 10px;");
+
+                    useBtn.setOnAction(e -> {
+                        if (player.useItem(item)) {
+                            viewMessage("Hai usato: " + item.getName());
+                            updatePlayerStatsUI();
+                            updateInventoryView();
+                            requestFocusOnGame();
+                        }
+                    });
+
+                    box.getChildren().addAll(nameLabel, useBtn);
+                    setGraphic(box);
+                }
+            }
+        });
+    }
+
+    public void updatePlayerStatsUI() {
+        if (gamecontroller == null) return;
+        Player player = gamecontroller.getPlayer();
+        if (player != null && healthLabel != null && powerLabel != null) {
+            healthLabel.setText("Salute: " + player.getHealth());
+            powerLabel.setText("Forza: " + player.getPower());
         }
     }
 }

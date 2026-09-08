@@ -13,16 +13,20 @@ public class GameController {
     private final GameBoard gameboard;
     private GameView gameView;
     private GamePersistenceManager gamePersistenceManager;
+    private Player player;
 
-    public  GameController(MovementHandler movementHandler,
+    public GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
                            GameBoard gameboard,
-                           GamePersistenceManager gamePersistenceManager) {
+                           GamePersistenceManager gamePersistenceManager,
+                          Player player) {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
         this.gameboard = gameboard;
         this.gamePersistenceManager = gamePersistenceManager;
+        this.player = player;
     }
+
     public void setGameView(GameView gameView) {
         this.gameView = gameView;
     }
@@ -32,6 +36,11 @@ public class GameController {
 
         if(message != null && gameView != null){
             gameView.viewMessage(message);
+
+            gameView.updateMapView(gameboard);
+
+            gameView.updateInventoryView();
+            gameView.updatePlayerStatsUI();
 
             saveCurrentGame();
         }
@@ -88,4 +97,10 @@ public class GameController {
     public GameBoard getGameboard() {
         return gameboard;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+
 }
