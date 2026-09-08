@@ -11,10 +11,6 @@ public class MovementHandler {
         this.gameBoard = gameBoard;
     }
 
-    public Coordinates getPlayerCoordinates() {
-        return playerCoordinates;
-    }
-
     public boolean movePlayer(Direction direction){
 
         Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);

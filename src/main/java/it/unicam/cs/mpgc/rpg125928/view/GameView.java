@@ -93,14 +93,9 @@ public class GameView {
         primaryStage.show();
         gameScene.getRoot().requestFocus();
 
-        if(gamecontroller != null) {
-            if(gamecontroller.getGameboard() != null) {
-                updateMapView(gamecontroller.getGameboard());
-            } else {
-            }
-        } else {
+        if(gamecontroller.getGameboard() != null) {
+            updateMapView(gamecontroller.getGameboard());
         }
-
     }
 
     public void requestFocusOnGame() {
