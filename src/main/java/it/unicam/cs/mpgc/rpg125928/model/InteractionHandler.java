@@ -53,6 +53,11 @@ public class InteractionHandler {
             if (enemyCoordinates != null) {
                 gameBoard.removeOccupant(enemyCoordinates);
             }
+
+            if(gameBoard.countHostileNPC() == 0){
+                return "LEVEL_CLEARED";
+            }
+
             return "Hai sconfitto " + enemy.getName();
 
         } else {

@@ -61,4 +61,28 @@ public class DefaultMapGenerator implements MapGenerator {
 
         return gameBoard;
     }
+
+    @Override
+    public void populateLevel(GameBoard gameBoard, int level, Player player){
+        gameBoard.getGameMap().clear();
+
+        generatePerimeterWalls(gameBoard);
+        generateInternalWalls(gameBoard);
+
+        Coordinates startCoords = new Coordinates(3, 11);
+        gameBoard.addOccupant(startCoords, player);
+
+        int numberOfEnemies = Math.min(level, 5);
+        for (int i = 0; i < numberOfEnemies; i++) {
+            int enemyPower = 3 + (level * 2);
+            int enemyHealth = 5 + (level * 3);
+            NPC enemy = new NPC("Mostro Lvl " + level + " (" + (i + 1) + ")", true, enemyHealth, enemyPower, true, "Grrr!");
+
+            gameBoard.addOccupant(new Coordinates(11 - (i * 2), 3 + (i * 2)), enemy);
+        }
+
+        PowerEnhancementEffect powerEffect = new PowerEnhancementEffect(5 + level);
+        Collectible potion = new Collectible("Pozione Lvl " + level, true, "+ Power", powerEffect);
+        gameBoard.addOccupant(new Coordinates(5, 5), potion);
+    }
 }
