@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
+import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
@@ -10,6 +11,7 @@ public class GameBoard {
 
     private Map<Coordinates, Occupant> gameMap;
     private final int mapSize;
+    private int currentLevel = 1;
 
     public GameBoard(int mapSize) {
         gameMap = new HashMap<>();
@@ -58,5 +60,21 @@ public class GameBoard {
                 .map(Player.class::cast)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public void incrementLevel() {
+        this.currentLevel++;
+    }
+
+    public Long countHostileNPC(){
+        return gameMap.values().stream()
+                .filter(NPC.class::isInstance)
+                .map(NPC.class::cast)
+                .filter(NPC::isHostile)
+                .count();
     }
 }
