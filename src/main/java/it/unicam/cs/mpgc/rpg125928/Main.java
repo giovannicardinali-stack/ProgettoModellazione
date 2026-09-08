@@ -2,8 +2,7 @@ package it.unicam.cs.mpgc.rpg125928;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.model.*;
-import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.DefaultMapGenerator;
-import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.MapGenerator;
+import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.*;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 import it.unicam.cs.mpgc.rpg125928.util.HibernateUtil;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
@@ -16,17 +15,31 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
 
-        MapGenerator mapGenerator = new DefaultMapGenerator();
+        Player player = new Player("Player 1", true, 10, 10, 4);
+
+        LevelConfigFactory levelConfigFactory = new LevelConfigFactory();
+
+        LevelConfig level1Config = LevelConfigFactory.getLevelConfig(1);
+
+        LevelMapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
 
         GameBoard gameBoard = mapGenerator.generateMap();
 
-        Coordinates playerCoordinates = new Coordinates(3,11);
+        Coordinates playerCoordinates = level1Config.getPlayerSpawn();
+
+//        LevelConfigFactory levelConfigFactory = new LevelConfigFactory();
+//        LevelConfig level1Config = LevelConfigFactory.getLevelConfig(1);
+//
+//        GameBoard gameBoard = mapGenerator.generateMap();
+//
+//        Player player = (Player) gameBoard.getOccupant(playerCoordinates);
+//        LevelMapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
+//
+//        Coordinates playerCoordinates = new Coordinates(3,11);
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         GamePersistenceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory, mapGenerator);
-
-        Player player = (Player) gameBoard.getOccupant(playerCoordinates);
 
         MovementHandler movementHandler = new MovementHandler(playerCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
@@ -35,7 +48,8 @@ public class Main extends Application {
                 , interactionHandler
                 , gameBoard
                 , gamePersistenceManager
-        , player);
+                , player
+        ,levelConfigFactory);
 
         GameView view = new GameView(primaryStage, gameController);
         gameController.setGameView(view);

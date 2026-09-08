@@ -1,6 +1,9 @@
 package it.unicam.cs.mpgc.rpg125928.controller;
 
 import it.unicam.cs.mpgc.rpg125928.model.*;
+import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfig;
+import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfigFactory;
+import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelMapGenerator;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
@@ -14,17 +17,20 @@ public class GameController {
     private GameView gameView;
     private GamePersistenceManager gamePersistenceManager;
     private Player player;
+    private LevelConfigFactory levelConfigFactory;
 
     public GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
                            GameBoard gameboard,
                            GamePersistenceManager gamePersistenceManager,
-                          Player player) {
+                          Player player,
+                          LevelConfigFactory levelConfigFactory) {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
         this.gameboard = gameboard;
         this.gamePersistenceManager = gamePersistenceManager;
         this.player = player;
+        this.levelConfigFactory = levelConfigFactory;
     }
 
     public void setGameView(GameView gameView) {
@@ -34,16 +40,37 @@ public class GameController {
     public void handleInteraction(){
         String message = interactionHandler.handleInteraction();
 
-        if(message != null && gameView != null){
+        if("LEVEL_CLEARED".equals(message)){
+            advanceToNextLevel();
+        }
+        else if(message != null && gameView != null){
             gameView.viewMessage(message);
-
             gameView.updateMapView(gameboard);
-
             gameView.updateInventoryView();
             gameView.updatePlayerStatsUI();
 
             saveCurrentGame();
         }
+    }
+
+    private void advanceToNextLevel() {
+        gameboard.incrementLevel();
+        int nextLevel = gameboard.getLevel();
+
+        LevelConfig nextLevelConfig = levelConfigFactory.getLevelConfig(nextLevel);
+
+        LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
+
+        mapGenerator.populateBoard(gameboard);
+
+        movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
+
+        if(gameView != null){
+            gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
+            gameView.updateMapView(gameboard);
+        }
+
+        saveCurrentGame();
     }
 
     public void onDirectionChange(Direction direction){

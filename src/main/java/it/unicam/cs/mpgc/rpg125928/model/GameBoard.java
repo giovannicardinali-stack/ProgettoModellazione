@@ -70,6 +70,10 @@ public class GameBoard {
         this.currentLevel++;
     }
 
+    public int getLevel() {
+        return currentLevel;
+    }
+
     public Long countHostileNPC(){
         return gameMap.values().stream()
                 .filter(NPC.class::isInstance)
