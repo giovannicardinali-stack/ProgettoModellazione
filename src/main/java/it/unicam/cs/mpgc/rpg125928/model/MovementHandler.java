@@ -12,33 +12,20 @@ public class MovementHandler {
     }
 
     public boolean movePlayer(Direction direction){
-        System.out.println("--- MOVE TRY ---");
-        System.out.println("Player Coords in Handler: " + playerCoordinates);
-
         Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
-        System.out.println("Target Coords: " + targetCoordinates);
 
-        if(!isInMapBorder(targetCoordinates)){
-            return false;
-        }
+        if(!isInMapBorder(targetCoordinates)){ return false; }
 
-        if (!gameBoard.cellIsEmpty(targetCoordinates)) {
-            System.out.println("Cell is NOT empty!");
-            return false;
-        }
+        if (!gameBoard.cellIsEmpty(targetCoordinates)) { return false; }
 
         Occupant player = gameBoard.getOccupant(playerCoordinates);
-        System.out.println("Player entity on board at current coords: " + player);
-        gameBoard.getGameMap().remove(playerCoordinates);
-
+        gameBoard.removeOccupant(playerCoordinates);
         playerCoordinates = targetCoordinates;
-
         gameBoard.addOccupant(playerCoordinates, player);
         return true;
     }
 
     public Coordinates getAdjacentCoordinates(Coordinates currentCoordinates, Direction direction){
-
         int newX = currentCoordinates.getX();
         int newY = currentCoordinates.getY();
 
@@ -52,22 +39,12 @@ public class MovementHandler {
     }
 
     public Coordinates getAdjacentOccupantCoordinates(){
-        Direction[] directions = {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
-
-        for(Direction direction : directions){
+        for(Direction direction : Direction.values()){
             Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
 
-
-
-            if(isInMapBorder(targetCoordinates)){
-                Occupant targetCell = gameBoard.getOccupant(targetCoordinates);
-                if(targetCell != null){
-                    return targetCoordinates;
-                }
-
+            if(isInMapBorder(targetCoordinates) && !gameBoard.cellIsEmpty(targetCoordinates)){
+                return targetCoordinates;
             }
-
-
         }
         return null;
     }
