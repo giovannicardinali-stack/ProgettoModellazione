@@ -15,6 +15,10 @@ public class MovementHandler {
 
         Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
 
+        if(isAtMapBorder(targetCoordinates)){
+            return false;
+        }
+
         if (!gameBoard.cellIsEmpty(targetCoordinates)) {
             return false;
         }
@@ -53,6 +57,11 @@ public class MovementHandler {
             }
         }
         return null;
+    }
+
+    private boolean isAtMapBorder(Coordinates coordinates){
+        int size = gameBoard.getMapSize();
+        return coordinates.getX() >= 0 && coordinates.getX() < size &&  coordinates.getY() >= 0 && coordinates.getY() < size;
     }
 
     public void setPlayerCoordinates(Coordinates playerCoordinates) {

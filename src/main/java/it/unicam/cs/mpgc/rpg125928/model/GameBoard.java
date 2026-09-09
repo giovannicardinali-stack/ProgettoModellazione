@@ -74,6 +74,8 @@ public class GameBoard {
         return currentLevel;
     }
 
+    public int getMapSize() { return mapSize; }
+
     public Long countHostileNPC(){
         return gameMap.values().stream()
                 .filter(NPC.class::isInstance)

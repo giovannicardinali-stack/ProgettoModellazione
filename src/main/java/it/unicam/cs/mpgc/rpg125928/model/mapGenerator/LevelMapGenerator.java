@@ -19,7 +19,8 @@ public class LevelMapGenerator implements  MapGenerator {
     @Override
     public GameBoard generateMap(){
         GameBoard gameBoard = new GameBoard(MAP_SIZE);
-
+        populateBoard(gameBoard);
+        return gameBoard;
     };
 
     @Override
@@ -31,7 +32,7 @@ public class LevelMapGenerator implements  MapGenerator {
 
     @Override
     public void populateLevel(GameBoard gameBoard, int level, Player player){
-
+        populateBoard(gameBoard);
     };
 
     public void populateBoard(GameBoard gameBoard){
