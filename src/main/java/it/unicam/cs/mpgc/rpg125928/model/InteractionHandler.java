@@ -25,16 +25,12 @@ public class InteractionHandler {
         }
         Occupant target = gameBoard.getOccupant(targetCoordinates);
 
-        if (target instanceof NPC nearNPC) {
-
-            return handleNPCInteraction(nearNPC, targetCoordinates);
-        }
-
-        if (target instanceof Collectible nearItem) {
-            return handleCollectibleInteraction(nearItem, targetCoordinates);
-        }
-
-        return "Interazione non valida.";
+        return switch (target){
+            case NPC nearNPC -> handleNPCInteraction(nearNPC,  targetCoordinates);
+            case Collectible nearItem -> handleCollectibleInteraction(nearItem, targetCoordinates);
+            case null -> "non c'è nulla con cui interagire nelle vicinanze...";
+            default -> "Interazione non valida.";
+        };
     }
 
     public String combatInteraction(NPC enemy, Coordinates enemyCoordinates) {
