@@ -21,26 +21,24 @@ public class LevelConfigFactory {
     }
 
     private static LevelConfig createLevel1() {
-        Coordinates playerSpawn = new Coordinates(3, 11);
+
         Map<Coordinates, NPC> enemies = new HashMap<>();
         enemies.put(new Coordinates(11, 3), new NPC("npc1", true, 8, 3, true, "..."));
 
         Map<Coordinates, Collectible> items = new HashMap<>();
         items.put(new Coordinates(5, 5), new Collectible("Pozione Piccola", true, "+5 HP", new PowerEnhancementEffect(5)));
 
-        List<Coordinates> internalWalls = List.of(
-                new Coordinates(8, 1),
-                new Coordinates(8, 2),
-                new Coordinates(8, 3),
-                new Coordinates(8, 4),
-                new Coordinates(8, 5)
+        return new LevelConfig(
+                1,
+                new Coordinates(3, 11),
+                enemies,
+                items,
+                List.of(new Coordinates(8, 1), new Coordinates(8, 2), new Coordinates(8, 3), new Coordinates(8, 4), new Coordinates(8, 5)
+                )
         );
-
-        return new LevelConfig(1, playerSpawn, enemies, items, internalWalls);
     }
 
     private static LevelConfig createLevel2() {
-        Coordinates playerSpawn = new Coordinates(1, 13);
 
         Map<Coordinates, NPC> enemies = new HashMap<>();
         enemies.put(new Coordinates(10, 5), new NPC("Orco", true, 15, 6, true, "ROAR!"));
@@ -49,33 +47,29 @@ public class LevelConfigFactory {
         Map<Coordinates, Collectible> items = new HashMap<>();
         items.put(new Coordinates(2, 2), new Collectible("Pozione Media", true, "+10 Power", new PowerEnhancementEffect(10)));
 
-        List<Coordinates> internalWalls = List.of(
-                new Coordinates(5, 5),
-                new Coordinates(5, 6),
-                new Coordinates(5, 7),
-                new Coordinates(6, 7),
-                new Coordinates(7, 7)
+        return new LevelConfig(
+                2,
+                new Coordinates(1, 13),
+                enemies,
+                items,
+                List.of(new Coordinates(5, 5), new Coordinates(5, 6), new Coordinates(5, 7), new Coordinates(6, 7), new Coordinates(7, 7)
+                )
         );
-
-        return new LevelConfig(2, playerSpawn, enemies, items, internalWalls);
     }
 
     private static LevelConfig createLevel3() {
-        Coordinates playerSpawn = new Coordinates(2, 2);
-
         Map<Coordinates, NPC> enemies = new HashMap<>();
         enemies.put(new Coordinates(7, 7), new NPC("Re Demone", true, 30, 10, true, "Inchinati!"));
-
         Map<Coordinates, Collectible> items = new HashMap<>();
         items.put(new Coordinates(1, 1), new Collectible("Elisir Supremo", true, "+20 Power", new PowerEnhancementEffect(20)));
 
-        List<Coordinates> internalWalls = List.of(
-                new Coordinates(6, 6),
-                new Coordinates(6, 8),
-                new Coordinates(8, 6),
-                new Coordinates(8, 8)
+        return new LevelConfig(
+                3,
+                new Coordinates(2, 2),
+                enemies,
+                items,
+                List.of(new Coordinates(6, 6), new Coordinates(6, 8),  new Coordinates(8, 6),  new Coordinates(8, 8)
+                )
         );
-
-        return new LevelConfig(3, playerSpawn, enemies, items, internalWalls);
     }
 }

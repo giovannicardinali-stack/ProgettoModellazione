@@ -61,7 +61,7 @@ public class GameController {
 
         LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
 
-        mapGenerator.populateBoard(gameboard);
+        mapGenerator.populateLevel(gameboard);
 
         movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
 

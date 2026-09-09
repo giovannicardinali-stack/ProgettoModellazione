@@ -112,6 +112,11 @@ public class GameView {
         mapArea.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         int mapsize = 15;
+        double exactGridDimension = mapsize * tileSize;
+
+        mapArea.setMaxSize(exactGridDimension, exactGridDimension);
+        mapArea.setMinSize(exactGridDimension, exactGridDimension);
+
         for (int i = 0; i < mapsize; i++) {
             mapArea.getColumnConstraints().add(new ColumnConstraints(tileSize));
             mapArea.getRowConstraints().add(new RowConstraints(tileSize));

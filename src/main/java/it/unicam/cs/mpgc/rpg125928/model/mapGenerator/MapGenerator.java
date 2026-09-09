@@ -8,6 +8,4 @@ public interface MapGenerator {
     GameBoard generateMap();
 
     GameBoard generateExistantMap();
-
-    void populateLevel(GameBoard gameBoard, int level, Player player);
 }

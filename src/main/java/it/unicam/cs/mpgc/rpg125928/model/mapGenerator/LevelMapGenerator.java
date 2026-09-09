@@ -19,22 +19,16 @@ public class LevelMapGenerator implements  MapGenerator {
     @Override
     public GameBoard generateMap(){
         GameBoard gameBoard = new GameBoard(MAP_SIZE);
-        populateBoard(gameBoard);
+        populateLevel(gameBoard);
         return gameBoard;
-    };
+    }
 
     @Override
     public GameBoard generateExistantMap(){
-        GameBoard gameBoard = new GameBoard(MAP_SIZE);
-        return gameBoard;
-    };
+        return new GameBoard(MAP_SIZE);
+    }
 
-    @Override
-    public void populateLevel(GameBoard gameBoard, int level, Player player){
-        populateBoard(gameBoard);
-    };
-
-    public void populateBoard(GameBoard gameBoard){
+    public void populateLevel(GameBoard gameBoard){
         gameBoard.getGameMap().clear();
 
         for (Coordinates wallCoord : levelConfig.getInternalWalls()) {
@@ -51,14 +45,4 @@ public class LevelMapGenerator implements  MapGenerator {
         levelConfig.getEnemies().forEach(gameBoard::addOccupant);
         levelConfig.getItems().forEach(gameBoard::addOccupant);
     }
-
-//    private void generatePerimeterWalls(GameBoard gameBoard) {
-//        int maxIndex = MAP_SIZE - 1;
-//        for (int i = 0; i < MAP_SIZE; i++) {
-//            gameBoard.addOccupant(new Coordinates(i, 0), new Obstacle("Wall", true));
-//            gameBoard.addOccupant(new Coordinates(i, maxIndex), new Obstacle("Wall", true));
-//            gameBoard.addOccupant(new Coordinates(0, i), new Obstacle("Wall", true));
-//            gameBoard.addOccupant(new Coordinates(maxIndex, i), new Obstacle("Wall", true));
-//        }
-//    }
 }
