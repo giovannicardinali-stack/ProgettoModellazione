@@ -16,30 +16,26 @@ public class Main extends Application {
     public void start(Stage primaryStage){
 
         Player player = new Player("Player 1", true, 10, 10, 4);
-
-        LevelConfigFactory levelConfigFactory = new LevelConfigFactory();
-
         LevelConfig level1Config = LevelConfigFactory.getLevelConfig(1);
 
         MapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
 
         GameBoard gameBoard = mapGenerator.generateMap();
 
-        Coordinates playerCoordinates = level1Config.getPlayerSpawn();
+        Coordinates playerSpawnCoordinates = level1Config.getPlayerSpawn();
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         GamePersistenceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory, mapGenerator);
 
-        MovementHandler movementHandler = new MovementHandler(playerCoordinates, gameBoard);
+        MovementHandler movementHandler = new MovementHandler(playerSpawnCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
 
         GameController gameController = new GameController(movementHandler
                 , interactionHandler
                 , gameBoard
                 , gamePersistenceManager
-                , player
-        ,levelConfigFactory);
+                , player);
 
         GameView view = new GameView(primaryStage, gameController);
         gameController.setGameView(view);

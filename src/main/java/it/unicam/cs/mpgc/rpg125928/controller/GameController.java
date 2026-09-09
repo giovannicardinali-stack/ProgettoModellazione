@@ -17,20 +17,17 @@ public class GameController {
     private GameView gameView;
     private GamePersistenceManager gamePersistenceManager;
     private Player player;
-    private LevelConfigFactory levelConfigFactory;
 
     public GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
                            GameBoard gameboard,
                            GamePersistenceManager gamePersistenceManager,
-                          Player player,
-                          LevelConfigFactory levelConfigFactory) {
+                          Player player) {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
         this.gameboard = gameboard;
         this.gamePersistenceManager = gamePersistenceManager;
         this.player = player;
-        this.levelConfigFactory = levelConfigFactory;
     }
 
     public void setGameView(GameView gameView) {
@@ -57,7 +54,7 @@ public class GameController {
         gameboard.incrementLevel();
         int nextLevel = gameboard.getLevel();
 
-        LevelConfig nextLevelConfig = levelConfigFactory.getLevelConfig(nextLevel);
+        LevelConfig nextLevelConfig = LevelConfigFactory.getLevelConfig(nextLevel);
 
         LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
 
