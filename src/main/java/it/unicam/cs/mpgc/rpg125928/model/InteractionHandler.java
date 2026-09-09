@@ -8,7 +8,7 @@ import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 public class InteractionHandler {
 
     private final MovementHandler movementHandler;
-    private final Player player;
+    private Player player;
     private final GameBoard gameBoard;
 
     public InteractionHandler(MovementHandler movementHandler, Player player, GameBoard gameBoard) {
@@ -43,28 +43,29 @@ public class InteractionHandler {
             return "La tua forza è inferiore o uguale a quella di " + enemy.getName() + "! Impossibile attaccare.";
         }
 
-        int damage = player.getPower();
-        int healthAfterAttack = enemy.getHealth() - damage;
-
-        enemy.setHealth(healthAfterAttack);
+        applyDamage(enemy, player.getPower());
 
         if (enemy.getHealth() <= 0) {
-            // Usiamo direttamente le coordinate passate anziché cercarle
-            if (enemyCoordinates != null) {
-                gameBoard.removeOccupant(enemyCoordinates);
-            }
+            return handleEnemyDefeat(enemy,enemyCoordinates);
 
-            if(gameBoard.countHostileNPC() == 0){
-                return "LEVEL_CLEARED";
-            }
-
-            return "Hai sconfitto " + enemy.getName();
-
-        } else {
-            return "Hai attaccato " + enemy.getName() +
-                    " infliggendo " + damage +
-                    " danni. (Salute nemico: " + enemy.getHealth() + ")";
         }
+        return "Hai attaccato " + enemy.getName() +
+                " infliggendo " + player.getPower() +
+                " danni. (Salute nemico: " + enemy.getHealth() + ")";
+    }
+
+    private void applyDamage(NPC enemy, int damage){
+        enemy.setHealth(enemy.getHealth() - damage);
+    }
+
+    private String handleEnemyDefeat(NPC enemy, Coordinates enemyCoordinates){
+        if (enemyCoordinates != null) {
+            gameBoard.removeOccupant(enemyCoordinates);
+        }
+        if(gameBoard.countHostileNPC() == 0){
+            return "LEVEL_CLEARED";
+        }
+        return "Hai sconfitto " + enemy.getName();
     }
 
     private String handleNPCInteraction(NPC nearNPC, Coordinates coordinates) {
@@ -80,5 +81,9 @@ public class InteractionHandler {
             return "Oggetto raccolto: " + nearItem.getName();
         }
         return "Inventario pieno! Impossibile raccogliere " + nearItem.getName();
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }
