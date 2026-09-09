@@ -12,18 +12,23 @@ public class MovementHandler {
     }
 
     public boolean movePlayer(Direction direction){
+        System.out.println("--- MOVE TRY ---");
+        System.out.println("Player Coords in Handler: " + playerCoordinates);
 
         Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
+        System.out.println("Target Coords: " + targetCoordinates);
 
         if(!isInMapBorder(targetCoordinates)){
             return false;
         }
 
         if (!gameBoard.cellIsEmpty(targetCoordinates)) {
+            System.out.println("Cell is NOT empty!");
             return false;
         }
 
         Occupant player = gameBoard.getOccupant(playerCoordinates);
+        System.out.println("Player entity on board at current coords: " + player);
         gameBoard.getGameMap().remove(playerCoordinates);
 
         playerCoordinates = targetCoordinates;

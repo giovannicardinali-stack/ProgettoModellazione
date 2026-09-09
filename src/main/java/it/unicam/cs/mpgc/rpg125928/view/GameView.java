@@ -109,9 +109,14 @@ public class GameView {
         mapArea.setAlignment(Pos.CENTER);
         mapArea.setHgap(0);
         mapArea.setVgap(0);
-
-
         mapArea.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        int mapsize = 15;
+        for (int i = 0; i < mapsize; i++) {
+            mapArea.getColumnConstraints().add(new ColumnConstraints(tileSize));
+            mapArea.getRowConstraints().add(new RowConstraints(tileSize));
+            
+        }
 
         URL resource = getClass().getResource("/images/floor.jpg");
 

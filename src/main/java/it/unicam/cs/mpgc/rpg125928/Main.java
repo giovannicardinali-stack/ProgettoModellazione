@@ -21,21 +21,11 @@ public class Main extends Application {
 
         LevelConfig level1Config = LevelConfigFactory.getLevelConfig(1);
 
-        LevelMapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
+        MapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
 
         GameBoard gameBoard = mapGenerator.generateMap();
 
         Coordinates playerCoordinates = level1Config.getPlayerSpawn();
-
-//        LevelConfigFactory levelConfigFactory = new LevelConfigFactory();
-//        LevelConfig level1Config = LevelConfigFactory.getLevelConfig(1);
-//
-//        GameBoard gameBoard = mapGenerator.generateMap();
-//
-//        Player player = (Player) gameBoard.getOccupant(playerCoordinates);
-//        LevelMapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
-//
-//        Coordinates playerCoordinates = new Coordinates(3,11);
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 

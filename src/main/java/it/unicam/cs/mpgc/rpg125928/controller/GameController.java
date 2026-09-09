@@ -65,9 +65,13 @@ public class GameController {
 
         movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
 
+        gamePersistenceManager.setMapGenerator(mapGenerator);
+
         if(gameView != null){
             gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
             gameView.updateMapView(gameboard);
+            gameView.updateInventoryView();
+            gameView.updatePlayerStatsUI();
         }
 
         saveCurrentGame();

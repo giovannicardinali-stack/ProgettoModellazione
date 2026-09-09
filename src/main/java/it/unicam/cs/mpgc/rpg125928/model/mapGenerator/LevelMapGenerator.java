@@ -26,7 +26,6 @@ public class LevelMapGenerator implements  MapGenerator {
     @Override
     public GameBoard generateExistantMap(){
         GameBoard gameBoard = new GameBoard(MAP_SIZE);
-        generatePerimeterWalls(gameBoard);
         return gameBoard;
     };
 
@@ -38,27 +37,28 @@ public class LevelMapGenerator implements  MapGenerator {
     public void populateBoard(GameBoard gameBoard){
         gameBoard.getGameMap().clear();
 
-        generatePerimeterWalls(gameBoard);
-
         for (Coordinates wallCoord : levelConfig.getInternalWalls()) {
             gameBoard.addOccupant(wallCoord, new Obstacle("Wall", true));
         }
 
         if (player != null && levelConfig.getPlayerSpawn() != null) {
-            gameBoard.addOccupant(levelConfig.getPlayerSpawn(), player);
+            Coordinates spawn = levelConfig.getPlayerSpawn();
+            player.setCoordinates(spawn);
+            gameBoard.addOccupant(spawn, player);
+
         }
 
         levelConfig.getEnemies().forEach(gameBoard::addOccupant);
         levelConfig.getItems().forEach(gameBoard::addOccupant);
     }
 
-    private void generatePerimeterWalls(GameBoard gameBoard) {
-        int maxIndex = MAP_SIZE - 1;
-        for (int i = 0; i < MAP_SIZE; i++) {
-            gameBoard.addOccupant(new Coordinates(i, 0), new Obstacle("Wall", true));
-            gameBoard.addOccupant(new Coordinates(i, maxIndex), new Obstacle("Wall", true));
-            gameBoard.addOccupant(new Coordinates(0, i), new Obstacle("Wall", true));
-            gameBoard.addOccupant(new Coordinates(maxIndex, i), new Obstacle("Wall", true));
-        }
-    }
+//    private void generatePerimeterWalls(GameBoard gameBoard) {
+//        int maxIndex = MAP_SIZE - 1;
+//        for (int i = 0; i < MAP_SIZE; i++) {
+//            gameBoard.addOccupant(new Coordinates(i, 0), new Obstacle("Wall", true));
+//            gameBoard.addOccupant(new Coordinates(i, maxIndex), new Obstacle("Wall", true));
+//            gameBoard.addOccupant(new Coordinates(0, i), new Obstacle("Wall", true));
+//            gameBoard.addOccupant(new Coordinates(maxIndex, i), new Obstacle("Wall", true));
+//        }
+//    }
 }

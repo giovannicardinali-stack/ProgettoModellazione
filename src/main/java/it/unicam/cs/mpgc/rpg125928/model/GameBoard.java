@@ -28,7 +28,7 @@ public class GameBoard {
     }
 
     public void addOccupant(Coordinates coordinates, Occupant occupant) {
-        if(!gameMap.containsKey(coordinates)) {
+        if(coordinates != null && occupant != null) {
             gameMap.put(coordinates, occupant);
         }
     }
