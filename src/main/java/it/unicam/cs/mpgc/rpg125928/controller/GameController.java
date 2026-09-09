@@ -6,6 +6,7 @@ import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfigFactory;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelMapGenerator;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
+import it.unicam.cs.mpgc.rpg125928.util.PersistanceManager;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
 
 import java.util.Map;
@@ -15,18 +16,18 @@ public class GameController {
     private final InteractionHandler interactionHandler;
     private final GameBoard gameboard;
     private GameView gameView;
-    private GamePersistenceManager gamePersistenceManager;
+    private PersistanceManager persistenceManager;
     private Player player;
 
     public GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
                            GameBoard gameboard,
-                           GamePersistenceManager gamePersistenceManager,
+                           PersistanceManager gamePersistenceManager,
                           Player player) {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
         this.gameboard = gameboard;
-        this.gamePersistenceManager = gamePersistenceManager;
+        this.persistenceManager = gamePersistenceManager;
         this.player = player;
     }
 
@@ -62,7 +63,7 @@ public class GameController {
 
         movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
 
-        gamePersistenceManager.setMapGenerator(mapGenerator);
+        persistenceManager.setMapGenerator(mapGenerator);
 
         if(gameView != null){
             gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
@@ -86,8 +87,8 @@ public class GameController {
     }
 
     public void saveCurrentGame() {
-        if (this.gamePersistenceManager != null && this.gameboard != null) {
-            gamePersistenceManager.saveGame(this.gameboard);
+        if (this.persistenceManager != null && this.gameboard != null) {
+            persistenceManager.saveGame(this.gameboard);
             if (this.gameView != null) {
                 gameView.viewMessage("Partita salvata con successo!");
             }
@@ -95,8 +96,8 @@ public class GameController {
     }
 
     public void loadGame() {
-        if (this.gamePersistenceManager != null) {
-            GameBoard loadedBoard = gamePersistenceManager.loadGame();
+        if (this.persistenceManager != null) {
+            GameBoard loadedBoard = persistenceManager.loadGame();
 
             if (loadedBoard != null && !loadedBoard.getGameMap().isEmpty()) {
 

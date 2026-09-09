@@ -4,7 +4,9 @@ import it.unicam.cs.mpgc.rpg125928.controller.GameController;
 import it.unicam.cs.mpgc.rpg125928.model.*;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.*;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
+import it.unicam.cs.mpgc.rpg125928.util.GamePersistenceManager;
 import it.unicam.cs.mpgc.rpg125928.util.HibernateUtil;
+import it.unicam.cs.mpgc.rpg125928.util.PersistanceManager;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -26,7 +28,7 @@ public class Main extends Application {
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-        GamePersistenceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory, mapGenerator);
+        PersistanceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory, mapGenerator);
 
         MovementHandler movementHandler = new MovementHandler(playerSpawnCoordinates, gameBoard);
         InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);

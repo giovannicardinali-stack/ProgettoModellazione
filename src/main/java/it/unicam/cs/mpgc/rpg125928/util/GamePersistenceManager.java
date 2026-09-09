@@ -1,5 +1,7 @@
-package it.unicam.cs.mpgc.rpg125928.model;
+package it.unicam.cs.mpgc.rpg125928.util;
 
+import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
+import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.MapGenerator;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class GamePersistenceManager {
+public class GamePersistenceManager implements PersistanceManager {
 
     private final SessionFactory sessionFactory;
     private MapGenerator mapGenerator;
@@ -20,6 +22,7 @@ public class GamePersistenceManager {
         this.mapGenerator = mapGenerator;
     }
 
+    @Override
     public void saveGame(GameBoard gameBoard) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -49,6 +52,7 @@ public class GamePersistenceManager {
         }
     }
 
+    @Override
     public GameBoard loadGame() {
 
         GameBoard gameBoard = mapGenerator.generateExistantMap();
