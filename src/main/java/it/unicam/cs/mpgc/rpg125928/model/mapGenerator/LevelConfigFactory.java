@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class LevelConfigFactory {
 
+    private static final int maxLevel = 3;
+
     public static LevelConfig getLevelConfig(int levelNumber) {
         return switch (levelNumber){
             case 1 -> createLevel1();
@@ -18,6 +20,10 @@ public class LevelConfigFactory {
             case 3 -> createLevel3();
             default -> createLevel1();
         };
+    }
+
+    public static boolean hasNextLevel(int currentLevel){
+        return currentLevel < maxLevel;
     }
 
     private static LevelConfig createLevel1() {

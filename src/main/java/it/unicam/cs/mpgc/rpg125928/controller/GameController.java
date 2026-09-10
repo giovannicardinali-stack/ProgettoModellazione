@@ -49,27 +49,39 @@ public class GameController {
     }
 
     private void advanceToNextLevel() {
-        gameboard.incrementLevel();
-        int nextLevel = gameboard.getLevel();
 
-        LevelConfig nextLevelConfig = LevelConfigFactory.getLevelConfig(nextLevel);
+        int currentLevel = gameboard.getLevel();
 
-        LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
+        if(LevelConfigFactory.hasNextLevel(currentLevel)){
+            gameboard.incrementLevel();
+            int nextLevel = gameboard.getLevel();
 
-        mapGenerator.populateLevel(gameboard);
+            LevelConfig nextLevelConfig = LevelConfigFactory.getLevelConfig(nextLevel);
+            LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
 
-        movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
+            mapGenerator.populateLevel(gameboard);
+            movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
 
-        persistenceManager.setMapGenerator(mapGenerator);
+            if(persistenceManager != null){
+                persistenceManager.setMapGenerator(mapGenerator);
+            }
 
-        if(gameView != null){
-            gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
-            gameView.updateMapView(gameboard);
-            gameView.updateInventoryView();
-            gameView.updatePlayerStatsUI();
+            if(gameView != null){
+                gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
+                gameView.updateMapView(gameboard);
+                gameView.updateInventoryView();
+                gameView.updatePlayerStatsUI();
+            }
+
+            saveCurrentGame();
+        }
+        else {
+            if(gameView != null){
+                gameView.viewMessage("COMPLIMENTI! Hai sconfitto tutti i nemici e completato il gioco!");
+            }
         }
 
-        saveCurrentGame();
+
     }
 
     public void onDirectionChange(Direction direction){
@@ -86,9 +98,9 @@ public class GameController {
     public void saveCurrentGame() {
         if (this.persistenceManager != null && this.gameboard != null) {
             persistenceManager.saveGame(this.gameboard);
-            if (this.gameView != null) {
-                gameView.viewMessage("Partita salvata con successo!");
-            }
+//            if (this.gameView != null) {
+//                gameView.viewMessage("Partita salvata con successo!");
+//            }
         }
     }
 
@@ -122,6 +134,7 @@ public class GameController {
             else {
                 if (gameView != null) {
                     gameView.viewMessage("Nessun salvataggio trovato o mappa vuota.");
+                    gameView.updateMapView(gameboard);
                 }
             }
         }
@@ -134,6 +147,5 @@ public class GameController {
     public Player getPlayer() {
         return player;
     }
-
 
 }

@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg125928.util.persistence;
 
-import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.IGameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.MapGenerator;
 
