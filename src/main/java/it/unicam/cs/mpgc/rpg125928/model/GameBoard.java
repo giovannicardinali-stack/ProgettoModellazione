@@ -4,7 +4,9 @@ import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameBoard {
@@ -16,6 +18,14 @@ public class GameBoard {
     public GameBoard(int mapSize) {
         gameMap = new HashMap<>();
         this.mapSize = mapSize;
+    }
+
+    public boolean isEmpty(){
+        return gameMap.isEmpty();
+    }
+
+    public void clear(){
+        gameMap.clear();
     }
 
     public boolean cellIsEmpty(Coordinates coordinates) {
@@ -33,6 +43,10 @@ public class GameBoard {
         }
     }
 
+    public boolean removeOccupant(Coordinates coordinates) {
+        return gameMap.remove(coordinates) != null;
+    }
+
     public Coordinates getOccupantCoordinates(Occupant occupant) {
         for (var entry : gameMap.entrySet()) {
             if (entry.getValue().equals(occupant)) {
@@ -47,11 +61,7 @@ public class GameBoard {
     }
 
     public Map<Coordinates, Occupant> getGameMap() {
-        return gameMap;
-    }
-
-    public boolean removeOccupant(Coordinates coordinates) {
-        return gameMap.remove(coordinates) != null;
+        return Collections.unmodifiableMap(gameMap);
     }
 
     public Player getPlayer(){
@@ -60,10 +70,6 @@ public class GameBoard {
                 .map(Player.class::cast)
                 .findFirst()
                 .orElse(null);
-    }
-
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
     }
 
     public void incrementLevel() {
@@ -82,5 +88,21 @@ public class GameBoard {
                 .map(NPC.class::cast)
                 .filter(NPC::isHostile)
                 .count();
+    }
+
+    public void putAll(Map<Coordinates, Occupant> newMap){
+        if (newMap != null) {
+            gameMap.putAll(newMap);
+        }
+    }
+
+    public int getOccupantCount() {
+        return gameMap.size();
+    }
+
+    public void copyOccupantsFrom(GameBoard otherBoard) {
+        if (otherBoard != null && otherBoard.getGameMap() != null) {
+            this.gameMap.putAll(otherBoard.getGameMap());
+        }
     }
 }
