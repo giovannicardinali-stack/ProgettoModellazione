@@ -108,4 +108,31 @@ public class GameBoard implements AbstractGameBoard{
             this.gameMap.putAll(otherBoard.getGameMap());
         }
     }
+
+    @Override
+    public Coordinates getAdjacentCoordinates(Coordinates currentCoordinates, Direction direction){
+        if(currentCoordinates == null || direction == null) {
+            return null;
+        }
+
+        int x = currentCoordinates.getX();
+        int y = currentCoordinates.getY();
+
+        return switch (direction){
+            case UP ->  new Coordinates(x, y -1 );
+            case DOWN -> new Coordinates(x, y + 1 );
+            case LEFT -> new Coordinates(x - 1, y);
+            case RIGHT -> new Coordinates(x + 1, y);
+        };
+    }
+
+    @Override
+    public boolean isWithinBounds(Coordinates coordinates){
+        if(coordinates == null) {
+            return false;
+        }
+
+        return coordinates.getX() >= 0 && coordinates.getX() < mapSize &&
+                coordinates.getY() >= 0 && coordinates.getY() < mapSize;
+    }
 }
