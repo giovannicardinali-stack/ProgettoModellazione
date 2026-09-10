@@ -11,14 +11,14 @@ import it.unicam.cs.mpgc.rpg125928.view.GameView;
 public class GameController {
     private final MovementHandler movementHandler;
     private final InteractionHandler interactionHandler;
-    private final GameBoard gameboard;
+    private final IGameBoard gameboard;
     private GameView gameView;
     private final PersistanceManager persistenceManager;
     private Player player;
 
     public GameController(MovementHandler movementHandler,
                            InteractionHandler interactionHandler,
-                           GameBoard gameboard,
+                           IGameBoard gameboard,
                            PersistanceManager gamePersistenceManager,
                           Player player) {
         this.movementHandler = movementHandler;
@@ -94,7 +94,7 @@ public class GameController {
 
     public void loadGame() {
         if (this.persistenceManager != null) {
-            GameBoard loadedBoard = persistenceManager.loadGame();
+            IGameBoard loadedBoard = persistenceManager.loadGame();
 
             if (loadedBoard != null && !loadedBoard.isEmpty()) {
 
@@ -127,7 +127,7 @@ public class GameController {
         }
     }
 
-    public GameBoard getGameboard() {
+    public IGameBoard getGameboard() {
         return gameboard;
     }
 

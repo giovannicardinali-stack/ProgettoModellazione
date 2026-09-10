@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg125928.util.persistence;
 
 import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
 import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
+import it.unicam.cs.mpgc.rpg125928.model.IGameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.MapGenerator;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
@@ -23,7 +24,7 @@ public class GamePersistenceManager implements PersistanceManager {
     }
 
     @Override
-    public void saveGame(GameBoard gameBoard) {
+    public void saveGame(IGameBoard gameBoard) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
@@ -53,9 +54,9 @@ public class GamePersistenceManager implements PersistanceManager {
     }
 
     @Override
-    public GameBoard loadGame() {
+    public IGameBoard loadGame() {
 
-        GameBoard gameBoard = mapGenerator.generateExistantMap();
+        IGameBoard gameBoard = mapGenerator.generateExistantMap();
 
         gameBoard.clear();
 

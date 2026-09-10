@@ -149,7 +149,7 @@ public class GameView {
         return downBar;
     }
 
-    public void updateMapView(GameBoard gameBoard){
+    public void updateMapView(IGameBoard gameBoard){
         mapArea.getChildren().clear();
 
         for(var entry : gameBoard.getGameMap().entrySet()){

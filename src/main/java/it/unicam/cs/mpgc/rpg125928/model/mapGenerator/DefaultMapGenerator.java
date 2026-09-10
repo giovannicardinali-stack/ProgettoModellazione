@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg125928.model.mapGenerator;
 
 import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
 import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
+import it.unicam.cs.mpgc.rpg125928.model.IGameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.PowerEnhancementEffect;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Collectible;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
@@ -13,8 +14,8 @@ public class DefaultMapGenerator implements MapGenerator {
     private static final int MAP_SIZE = 15;
 
     @Override
-    public GameBoard generateMap(){
-        GameBoard gameBoard = new GameBoard(MAP_SIZE);
+    public IGameBoard generateMap(){
+        IGameBoard gameBoard = new GameBoard(MAP_SIZE);
 
         generatePerimeterWalls(gameBoard);
         generateInternalWalls(gameBoard);
@@ -23,13 +24,13 @@ public class DefaultMapGenerator implements MapGenerator {
         return gameBoard;
     }
 
-    public void generateInternalWalls(GameBoard gameBoard){
+    public void generateInternalWalls(IGameBoard gameBoard){
         for (int y = 1; y <= 5; y++) {
             gameBoard.addOccupant(new Coordinates(8, y), new Obstacle("Wall", true));
         }
     }
 
-    private void generatePerimeterWalls(GameBoard gameBoard) {
+    private void generatePerimeterWalls(IGameBoard gameBoard) {
         int maxIndex = MAP_SIZE - 1;
         for (int i = 0; i < MAP_SIZE; i++) {
             gameBoard.addOccupant(new Coordinates(i, 0), new Obstacle("Wall", true));
@@ -39,7 +40,7 @@ public class DefaultMapGenerator implements MapGenerator {
         }
     }
 
-    private void generateEntities(GameBoard gameBoard) {
+    private void generateEntities(IGameBoard gameBoard) {
         Player player = new Player("player1", true, 10, 10, 4);
         gameBoard.addOccupant(new Coordinates(3, 11), player);
 
@@ -53,8 +54,8 @@ public class DefaultMapGenerator implements MapGenerator {
     }
 
     @Override
-    public GameBoard generateExistantMap(){
-        GameBoard gameBoard = new GameBoard(MAP_SIZE);
+    public IGameBoard generateExistantMap(){
+        IGameBoard gameBoard = new GameBoard(MAP_SIZE);
 
         generatePerimeterWalls(gameBoard);
         generateInternalWalls(gameBoard);

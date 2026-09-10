@@ -22,7 +22,7 @@ public class Main extends Application {
 
         MapGenerator mapGenerator = new LevelMapGenerator(level1Config, player);
 
-        GameBoard gameBoard = mapGenerator.generateMap();
+        IGameBoard gameBoard = mapGenerator.generateMap();
 
         Coordinates playerSpawnCoordinates = level1Config.getPlayerSpawn();
 

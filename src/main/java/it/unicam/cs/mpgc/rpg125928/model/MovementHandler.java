@@ -4,9 +4,9 @@ import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 
 public class MovementHandler {
     private Coordinates playerCoordinates;
-    private final GameBoard gameBoard;
+    private final IGameBoard gameBoard;
 
-    public MovementHandler(Coordinates playerCoordinates, GameBoard gameBoard) {
+    public MovementHandler(Coordinates playerCoordinates, IGameBoard gameBoard) {
         this.playerCoordinates = playerCoordinates;
         this.gameBoard = gameBoard;
     }

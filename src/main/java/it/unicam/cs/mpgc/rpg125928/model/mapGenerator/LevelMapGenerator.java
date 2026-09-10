@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg125928.model.mapGenerator;
 
 import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
 import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
+import it.unicam.cs.mpgc.rpg125928.model.IGameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Obstacle;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
@@ -17,18 +18,18 @@ public class LevelMapGenerator implements  MapGenerator {
     }
 
     @Override
-    public GameBoard generateMap(){
-        GameBoard gameBoard = new GameBoard(MAP_SIZE);
+    public IGameBoard generateMap(){
+        IGameBoard gameBoard = new GameBoard(MAP_SIZE);
         populateLevel(gameBoard);
         return gameBoard;
     }
 
     @Override
-    public GameBoard generateExistantMap(){
+    public IGameBoard generateExistantMap(){
         return new GameBoard(MAP_SIZE);
     }
 
-    public void populateLevel(GameBoard gameBoard){
+    public void populateLevel(IGameBoard gameBoard){
         gameBoard.clear();
 
         for (Coordinates wallCoord : levelConfig.getInternalWalls()) {

@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
 import java.util.Map;
 
-public interface AbstractGameBoard {
+public interface IGameBoard {
 
     boolean isEmpty();
 
@@ -33,7 +33,7 @@ public interface AbstractGameBoard {
 
     Long countHostileNPC();
 
-    void copyOccupantsFrom(GameBoard otherBoard);
+    void copyOccupantsFrom(IGameBoard otherBoard);
 
     Coordinates getAdjacentCoordinates(Coordinates current, Direction direction);
 

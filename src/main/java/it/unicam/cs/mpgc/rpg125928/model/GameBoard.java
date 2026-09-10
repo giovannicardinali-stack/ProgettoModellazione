@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameBoard implements AbstractGameBoard{
+public class GameBoard implements IGameBoard {
 
     private Map<Coordinates, Occupant> gameMap;
     private final int mapSize;
@@ -103,7 +103,7 @@ public class GameBoard implements AbstractGameBoard{
     }
 
     @Override
-    public void copyOccupantsFrom(GameBoard otherBoard) {
+    public void copyOccupantsFrom(IGameBoard otherBoard) {
         if (otherBoard != null && otherBoard.getGameMap() != null) {
             this.gameMap.putAll(otherBoard.getGameMap());
         }

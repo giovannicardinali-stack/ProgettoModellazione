@@ -9,9 +9,9 @@ public class InteractionHandler {
 
     private final MovementHandler movementHandler;
     private Player player;
-    private final GameBoard gameBoard;
+    private final IGameBoard gameBoard;
 
-    public InteractionHandler(MovementHandler movementHandler, Player player, GameBoard gameBoard) {
+    public InteractionHandler(MovementHandler movementHandler, Player player, IGameBoard gameBoard) {
         this.movementHandler = movementHandler;
         this.player = player;
         this.gameBoard = gameBoard;
@@ -34,6 +34,9 @@ public class InteractionHandler {
     }
 
     public String combatInteraction(NPC enemy, Coordinates enemyCoordinates) {
+        if (player == null || enemy == null) {
+            return "Interazione non valida.";
+        }
 
         if (player.getPower() < enemy.getPower()) {
             return "La tua forza è inferiore o uguale a quella di " + enemy.getName() + "! Impossibile attaccare.";
