@@ -6,10 +6,9 @@ import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class GameBoard {
+public class GameBoard implements AbstractGameBoard{
 
     private Map<Coordinates, Occupant> gameMap;
     private final int mapSize;
@@ -20,14 +19,17 @@ public class GameBoard {
         this.mapSize = mapSize;
     }
 
+    @Override
     public boolean isEmpty(){
         return gameMap.isEmpty();
     }
 
+    @Override
     public void clear(){
         gameMap.clear();
     }
 
+    @Override
     public boolean cellIsEmpty(Coordinates coordinates) {
         if(!gameMap.containsKey(coordinates)) {
             return true;
@@ -37,20 +39,24 @@ public class GameBoard {
         return !occupant.isSolid();
     }
 
+    @Override
     public void addOccupant(Coordinates coordinates, Occupant occupant) {
         if(coordinates != null && occupant != null) {
             gameMap.put(coordinates, occupant);
         }
     }
 
+    @Override
     public boolean removeOccupant(Coordinates coordinates) {
         return gameMap.remove(coordinates) != null;
     }
 
+    @Override
     public Occupant getOccupant(Coordinates coordinates) {
         return gameMap.get(coordinates);
     }
 
+    @Override
     public Coordinates getOccupantCoordinates(Occupant occupant) {
         for (var entry : gameMap.entrySet()) {
             if (entry.getValue().equals(occupant)) {
@@ -60,10 +66,12 @@ public class GameBoard {
         return null;
     }
 
+    @Override
     public Map<Coordinates, Occupant> getGameMap() {
         return Collections.unmodifiableMap(gameMap);
     }
 
+    @Override
     public Player getPlayer(){
         return gameMap.values().stream()
                 .filter(Player.class::isInstance)
@@ -72,16 +80,20 @@ public class GameBoard {
                 .orElse(null);
     }
 
+    @Override
     public void incrementLevel() {
         this.currentLevel++;
     }
 
+    @Override
     public int getLevel() {
         return currentLevel;
     }
 
+    @Override
     public int getMapSize() { return mapSize; }
 
+    @Override
     public Long countHostileNPC(){
         return gameMap.values().stream()
                 .filter(NPC.class::isInstance)
@@ -90,6 +102,7 @@ public class GameBoard {
                 .count();
     }
 
+    @Override
     public void copyOccupantsFrom(GameBoard otherBoard) {
         if (otherBoard != null && otherBoard.getGameMap() != null) {
             this.gameMap.putAll(otherBoard.getGameMap());
