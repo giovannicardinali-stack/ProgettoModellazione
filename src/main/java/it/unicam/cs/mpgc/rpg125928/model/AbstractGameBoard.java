@@ -34,4 +34,8 @@ public interface AbstractGameBoard {
     Long countHostileNPC();
 
     void copyOccupantsFrom(GameBoard otherBoard);
+
+    Coordinates getAdjacentCoordinates(Coordinates current, Direction direction);
+
+    boolean isWithinBounds(Coordinates coordinates);
 }
