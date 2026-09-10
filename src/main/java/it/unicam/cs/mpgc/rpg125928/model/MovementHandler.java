@@ -12,47 +12,27 @@ public class MovementHandler {
     }
 
     public boolean movePlayer(Direction direction){
-        Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
+        Coordinates targetCoordinates = gameBoard.getAdjacentCoordinates(playerCoordinates, direction);
 
-        if(!isInMapBorder(targetCoordinates)){ return false; }
-
-        if (!gameBoard.cellIsEmpty(targetCoordinates)) { return false; }
+        if(!gameBoard.isWithinBounds(targetCoordinates) || !gameBoard.cellIsEmpty(targetCoordinates)){
+            return false; }
 
         Occupant player = gameBoard.getOccupant(playerCoordinates);
         gameBoard.removeOccupant(playerCoordinates);
-        playerCoordinates = targetCoordinates;
+        this.playerCoordinates = targetCoordinates;
         gameBoard.addOccupant(playerCoordinates, player);
         return true;
     }
 
-    public Coordinates getAdjacentCoordinates(Coordinates currentCoordinates, Direction direction){
-        int newX = currentCoordinates.getX();
-        int newY = currentCoordinates.getY();
-
-        switch (direction){
-            case UP ->  newY--;
-            case DOWN -> newY++;
-            case LEFT -> newX--;
-            case RIGHT -> newX++;
-        }
-        return new Coordinates(newX, newY);
-    }
-
     public Coordinates getAdjacentOccupantCoordinates(){
         for(Direction direction : Direction.values()){
-            Coordinates targetCoordinates = getAdjacentCoordinates(playerCoordinates, direction);
+            Coordinates targetCoordinates = gameBoard.getAdjacentCoordinates(playerCoordinates, direction);
 
-            if(isInMapBorder(targetCoordinates) && !gameBoard.cellIsEmpty(targetCoordinates)){
+            if(gameBoard.isWithinBounds(targetCoordinates) && !gameBoard.cellIsEmpty(targetCoordinates)){
                 return targetCoordinates;
             }
         }
         return null;
-    }
-
-    private boolean isInMapBorder(Coordinates coordinates){
-        int size = gameBoard.getMapSize();
-        return coordinates.getX() >= 0 && coordinates.getX() < size &&
-                coordinates.getY() >= 0 && coordinates.getY() < size;
     }
 
     public void setPlayerCoordinates(Coordinates playerCoordinates) {
