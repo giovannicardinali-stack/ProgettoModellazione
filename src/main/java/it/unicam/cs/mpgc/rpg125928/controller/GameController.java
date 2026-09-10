@@ -51,28 +51,22 @@ public class GameController {
     private void advanceToNextLevel() {
 
         int currentLevel = gameboard.getLevel();
-
         if(LevelConfigFactory.hasNextLevel(currentLevel)){
             gameboard.incrementLevel();
             int nextLevel = gameboard.getLevel();
-
             LevelConfig nextLevelConfig = LevelConfigFactory.getLevelConfig(nextLevel);
             LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
-
             mapGenerator.populateLevel(gameboard);
             movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
-
             if(persistenceManager != null){
                 persistenceManager.setMapGenerator(mapGenerator);
             }
-
             if(gameView != null){
                 gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
                 gameView.updateMapView(gameboard);
                 gameView.updateInventoryView();
                 gameView.updatePlayerStatsUI();
             }
-
             saveCurrentGame();
         }
         else {
@@ -80,8 +74,6 @@ public class GameController {
                 gameView.viewMessage("COMPLIMENTI! Hai sconfitto tutti i nemici e completato il gioco!");
             }
         }
-
-
     }
 
     public void onDirectionChange(Direction direction){
@@ -98,9 +90,6 @@ public class GameController {
     public void saveCurrentGame() {
         if (this.persistenceManager != null && this.gameboard != null) {
             persistenceManager.saveGame(this.gameboard);
-//            if (this.gameView != null) {
-//                gameView.viewMessage("Partita salvata con successo!");
-//            }
         }
     }
 
