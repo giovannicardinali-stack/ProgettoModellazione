@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125928.util;
+package it.unicam.cs.mpgc.rpg125928.util.persistence;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

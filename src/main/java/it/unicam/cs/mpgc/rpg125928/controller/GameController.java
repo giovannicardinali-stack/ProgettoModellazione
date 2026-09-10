@@ -4,19 +4,16 @@ import it.unicam.cs.mpgc.rpg125928.model.*;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfig;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfigFactory;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelMapGenerator;
-import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
-import it.unicam.cs.mpgc.rpg125928.util.PersistanceManager;
+import it.unicam.cs.mpgc.rpg125928.util.persistence.PersistanceManager;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
-
-import java.util.Map;
 
 public class GameController {
     private final MovementHandler movementHandler;
     private final InteractionHandler interactionHandler;
     private final GameBoard gameboard;
     private GameView gameView;
-    private PersistanceManager persistenceManager;
+    private final PersistanceManager persistenceManager;
     private Player player;
 
     public GameController(MovementHandler movementHandler,
@@ -99,15 +96,21 @@ public class GameController {
         if (this.persistenceManager != null) {
             GameBoard loadedBoard = persistenceManager.loadGame();
 
-            if (loadedBoard != null && !loadedBoard.getGameMap().isEmpty()) {
+            if (loadedBoard != null && !loadedBoard.isEmpty()) {
 
-                this.gameboard.getGameMap().clear();
-                this.gameboard.getGameMap().putAll(loadedBoard.getGameMap());
+                this.gameboard.clear();
+                this.gameboard.copyOccupantsFrom(loadedBoard);
 
-                for (Map.Entry<Coordinates, Occupant> entry : this.gameboard.getGameMap().entrySet()) {
-                    if (entry.getValue() instanceof Player) {
-                        this.movementHandler.setPlayerCoordinates(entry.getKey());
-                        break;
+                Player loadedPlayer = this.gameboard.getPlayer();
+
+                if(loadedPlayer != null){
+                    this.player = loadedPlayer;
+
+                    this.interactionHandler.setPlayer(loadedPlayer);
+
+                    Coordinates playerCoords = this.gameboard.getOccupantCoordinates(loadedPlayer);
+                    if (playerCoords != null) {
+                        this.movementHandler.setPlayerCoordinates(playerCoords);
                     }
                 }
                 if (gameView != null) {
@@ -115,7 +118,8 @@ public class GameController {
                     gameView.viewMessage("Partita caricata con successo!");
                     gameView.requestFocusOnGame();
                 }
-            } else {
+            }
+            else {
                 if (gameView != null) {
                     gameView.viewMessage("Nessun salvataggio trovato o mappa vuota.");
                 }

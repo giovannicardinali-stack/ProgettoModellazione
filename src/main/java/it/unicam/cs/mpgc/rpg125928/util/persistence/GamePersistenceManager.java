@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125928.util;
+package it.unicam.cs.mpgc.rpg125928.util.persistence;
 
 import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
 import it.unicam.cs.mpgc.rpg125928.model.GameBoard;
@@ -57,6 +57,8 @@ public class GamePersistenceManager implements PersistanceManager {
 
         GameBoard gameBoard = mapGenerator.generateExistantMap();
 
+        gameBoard.clear();
+
         gameBoard.getGameMap().values().removeIf(occupant -> occupant instanceof Player || occupant instanceof NPC);
 
         try (Session session = sessionFactory.openSession()) {
@@ -66,10 +68,9 @@ public class GamePersistenceManager implements PersistanceManager {
                 Coordinates coords = occupant.getCoordinates();
                 if (coords != null) {
 
-                    gameBoard.getGameMap().put(coords, occupant);
+                    gameBoard.addOccupant(coords, occupant);
                 }
             }
-
             System.out.println("Partita caricata e board ricostruita con successo!");
         } catch (Exception e) {
             e.printStackTrace();

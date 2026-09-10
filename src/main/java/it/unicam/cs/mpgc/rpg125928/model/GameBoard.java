@@ -47,6 +47,10 @@ public class GameBoard {
         return gameMap.remove(coordinates) != null;
     }
 
+    public Occupant getOccupant(Coordinates coordinates) {
+        return gameMap.get(coordinates);
+    }
+
     public Coordinates getOccupantCoordinates(Occupant occupant) {
         for (var entry : gameMap.entrySet()) {
             if (entry.getValue().equals(occupant)) {
@@ -54,10 +58,6 @@ public class GameBoard {
             }
         }
         return null;
-    }
-
-    public Occupant getOccupant(Coordinates coordinates) {
-        return gameMap.get(coordinates);
     }
 
     public Map<Coordinates, Occupant> getGameMap() {
@@ -88,16 +88,6 @@ public class GameBoard {
                 .map(NPC.class::cast)
                 .filter(NPC::isHostile)
                 .count();
-    }
-
-    public void putAll(Map<Coordinates, Occupant> newMap){
-        if (newMap != null) {
-            gameMap.putAll(newMap);
-        }
-    }
-
-    public int getOccupantCount() {
-        return gameMap.size();
     }
 
     public void copyOccupantsFrom(GameBoard otherBoard) {

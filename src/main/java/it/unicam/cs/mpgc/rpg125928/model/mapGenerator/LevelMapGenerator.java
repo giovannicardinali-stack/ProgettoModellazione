@@ -29,7 +29,7 @@ public class LevelMapGenerator implements  MapGenerator {
     }
 
     public void populateLevel(GameBoard gameBoard){
-        gameBoard.getGameMap().clear();
+        gameBoard.clear();
 
         for (Coordinates wallCoord : levelConfig.getInternalWalls()) {
             gameBoard.addOccupant(wallCoord, new Obstacle("Wall", true));
