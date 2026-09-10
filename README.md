@@ -5,30 +5,30 @@ The application allows player to:
 - pick up and use object (power-ups)
 - interact and combat with NPC 
 
-### Prerequisiti
+### Requirements
 - Java 25 (LTS)
 - Gradle
 
-### Istruzioni
+### Instruction
 
 ```bash
 git clone https://github.com/giovannicardinali-stack/ProgettoModellazione
 cd ProgettoModellazione
 ```
 
-### Build del progetto
+### Project build
 
 ```bash
 ./gradlew build
 ```
 
-### Esecuzione
+### Execution
 
 ```bash
 ./gradlew run
 ```
 
-## Uso di strumenti di AI:
+## Declaration of AI use
 
 During development, AI (Gemini) was used as a syntax assistant, specifically for configuring and integrating the Hibernate/JPA framework
 and to navigate the graphical aspect, as game development was a new thing for me
