@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 public class Player extends Occupant {
 
-
     private int power;
     private int health;
 
@@ -16,7 +15,6 @@ public class Player extends Occupant {
     @JoinColumn(name = "player_id")
     private List<Collectible> inventory;
     private int inventorySize;
-
 
     public Player() {
 
@@ -28,8 +26,6 @@ public class Player extends Occupant {
         this.health = health;
         this.inventory = new ArrayList<Collectible>();
         this.inventorySize = inventorySize;
-
-
     }
 
     public int getPower() { return power; }
@@ -50,14 +46,6 @@ public class Player extends Occupant {
         else {
             return false;
         }
-    }
-
-    public boolean removeItem(Collectible item){
-        if(inventory.contains(item)){
-            inventory.remove(item);
-            return true;
-        }
-        return false;
     }
 
     public boolean useItem(Collectible item){
