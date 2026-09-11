@@ -1,29 +1,34 @@
-Il software rappresenta una demo di un gioco di ruolo (RPG) a griglia sviluppato in Java con interfaccia JavaFX e persistenza dei dati basata su Hibernate/JPA.
-Il programma permette di muoversi su una mappa, interagire con oggetti e NPC, combattere e salvare/caricare i progressi di gioco.
+This software is a 2D Role-playing game (RPG) developed mostly in java, featuring a JavaFX user interface and data persistence powered by Hibernate/JPA.
+The application allows player to:
+- create a new game or load an existent one
+- navigate the map
+- pick up and use object (power-ups)
+- interact and combat with NPC 
 
-### Prerequisiti
+### Requirements
 - Java 25 (LTS)
 - Gradle
 
-### Istruzioni
+### Instruction
 
 ```bash
 git clone https://github.com/giovannicardinali-stack/ProgettoModellazione
 cd ProgettoModellazione
 ```
 
-### Build del progetto
+### Project build
 
 ```bash
 ./gradlew build
 ```
 
-### Esecuzione
+### Execution
 
 ```bash
 ./gradlew run
 ```
 
-## Uso di strumenti di AI:
+## Declaration of AI use
 
-Ho utilizzato gemini principalmente per aiutarmi con la sintassi, in particolare quella riguardante la configurazione e l'utilizzo di Hibernate
+During development, AI (Gemini) was used as a syntax assistant, specifically for configuring and integrating the Hibernate/JPA framework
+and to navigate the graphical aspect, as game development was a new thing for me
