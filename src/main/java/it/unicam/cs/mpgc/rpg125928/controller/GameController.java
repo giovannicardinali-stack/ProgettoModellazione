@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg125928.model.*;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfig;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelConfigFactory;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.LevelMapGenerator;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Collectible;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 import it.unicam.cs.mpgc.rpg125928.util.persistence.PersistanceManager;
 import it.unicam.cs.mpgc.rpg125928.view.GameView;
@@ -116,6 +117,8 @@ public class GameController {
                 }
                 if (gameView != null) {
                     gameView.updateMapView(this.gameboard);
+                    gameView.updatePlayerStatsUI();
+                    gameView.updateInventoryView();
                     gameView.viewMessage("Partita caricata con successo!");
                     gameView.requestFocusOnGame();
                 }
@@ -126,6 +129,17 @@ public class GameController {
                     gameView.updateMapView(gameboard);
                 }
             }
+        }
+    }
+
+    public void handleItemUse(Collectible item){
+        boolean success = player.useItem(item);
+
+        if(success && gameView != null){
+            gameView.viewMessage("Hai usato: " + item.getName());
+            gameView.updatePlayerStatsUI();
+            gameView.updateInventoryView();
+            saveCurrentGame();
         }
     }
 

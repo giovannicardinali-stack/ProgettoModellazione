@@ -143,6 +143,7 @@ public class GameView {
         textArea = new TextArea();
         textArea.setPrefHeight(100);
         textArea.setEditable(false);
+        textArea.setFocusTraversable(false);
         textArea.setText("Benvenuto");
 
         downBar.getChildren().add(textArea);
@@ -193,6 +194,7 @@ public class GameView {
 
         inventoryListView = new ListView<>();
         inventoryListView.setPrefHeight(300);
+        inventoryListView.setFocusTraversable(false);
         inventoryListView.setStyle("-fx-control-inner-background: #1e1e1e; -fx-background-color: #1e1e1e;");
 
         updateInventoryView();
@@ -231,14 +233,11 @@ public class GameView {
 
                     Button useBtn = new Button("Usa");
                     useBtn.setStyle("-fx-font-size: 10px;");
+                    useBtn.setFocusTraversable(false);
 
                     useBtn.setOnAction(e -> {
-                        if (player.useItem(item)) {
-                            viewMessage("Hai usato: " + item.getName());
-                            updatePlayerStatsUI();
-                            updateInventoryView();
-                            requestFocusOnGame();
-                        }
+                        gamecontroller.handleItemUse(item);
+                        requestFocusOnGame();
                     });
 
                     box.getChildren().addAll(nameLabel, useBtn);
