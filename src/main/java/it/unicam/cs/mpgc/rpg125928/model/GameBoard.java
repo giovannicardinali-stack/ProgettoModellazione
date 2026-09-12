@@ -4,7 +4,6 @@ import it.unicam.cs.mpgc.rpg125928.model.occupant.NPC;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,6 @@ public class GameBoard implements IGameBoard {
             return true;
         }
         Occupant occupant = gameMap.get(coordinates);
-
         return !occupant.isSolid();
     }
 
@@ -58,8 +56,14 @@ public class GameBoard implements IGameBoard {
 
     @Override
     public Coordinates getOccupantCoordinates(Occupant occupant) {
+        if (occupant == null) return null;
+
         for (var entry : gameMap.entrySet()) {
-            if (entry.getValue().equals(occupant)) {
+            Occupant value = entry.getValue();
+            if (value == occupant) {
+                return entry.getKey();
+            }
+            if (value != null && value.getId() != null && value.getId().equals(occupant.getId())) {
                 return entry.getKey();
             }
         }
@@ -68,7 +72,7 @@ public class GameBoard implements IGameBoard {
 
     @Override
     public Map<Coordinates, Occupant> getGameMap() {
-        return Collections.unmodifiableMap(gameMap);
+        return this.gameMap;
     }
 
     @Override
@@ -90,7 +94,6 @@ public class GameBoard implements IGameBoard {
         return currentLevel;
     }
 
-    @Override
     public int getMapSize() { return mapSize; }
 
     @Override
@@ -119,8 +122,8 @@ public class GameBoard implements IGameBoard {
         int y = currentCoordinates.getY();
 
         return switch (direction){
-            case UP ->  new Coordinates(x, y -1 );
-            case DOWN -> new Coordinates(x, y + 1 );
+            case UP ->  new Coordinates(x, y - 1);
+            case DOWN -> new Coordinates(x, y + 1);
             case LEFT -> new Coordinates(x - 1, y);
             case RIGHT -> new Coordinates(x + 1, y);
         };

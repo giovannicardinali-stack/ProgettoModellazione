@@ -26,15 +26,23 @@ public class LevelMapGenerator implements  MapGenerator {
 
     @Override
     public IGameBoard generateExistantMap(){
-        return new GameBoard(MAP_SIZE);
+        IGameBoard gameBoard = new GameBoard(MAP_SIZE);
+        populateWalls(gameBoard);
+        return gameBoard;
+    }
+    
+    private void populateWalls(IGameBoard gameBoard){
+        if (levelConfig != null && levelConfig.getInternalWalls() != null) {
+            for (Coordinates wallCoord : levelConfig.getInternalWalls()) {
+                gameBoard.addOccupant(wallCoord, new Obstacle("Wall", true));
+            }
+        }
     }
 
     public void populateLevel(IGameBoard gameBoard){
         gameBoard.clear();
 
-        for (Coordinates wallCoord : levelConfig.getInternalWalls()) {
-            gameBoard.addOccupant(wallCoord, new Obstacle("Wall", true));
-        }
+        populateWalls(gameBoard);
 
         if (player != null && levelConfig.getPlayerSpawn() != null) {
             Coordinates spawn = levelConfig.getPlayerSpawn();

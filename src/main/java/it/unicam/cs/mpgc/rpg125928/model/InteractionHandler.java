@@ -26,7 +26,7 @@ public class InteractionHandler {
         Occupant target = gameBoard.getOccupant(targetCoordinates);
 
         return switch (target){
-            case NPC nearNPC -> handleNPCInteraction(nearNPC,  targetCoordinates);
+            case NPC nearNPC -> handleNPCInteraction(nearNPC, targetCoordinates);
             case Collectible nearItem -> handleCollectibleInteraction(nearItem, targetCoordinates);
             case null -> "non c'è nulla con cui interagire nelle vicinanze...";
             default -> "Interazione non valida.";
@@ -45,8 +45,7 @@ public class InteractionHandler {
         applyDamage(enemy, player.getPower());
 
         if (enemy.getHealth() <= 0) {
-            return handleEnemyDefeat(enemy,enemyCoordinates);
-
+            return handleEnemyDefeat(enemy, enemyCoordinates);
         }
         return "Hai attaccato " + enemy.getName() +
                 " infliggendo " + player.getPower() +
@@ -76,6 +75,7 @@ public class InteractionHandler {
 
     private String handleCollectibleInteraction(Collectible nearItem, Coordinates coordinates) {
         if (player.addItem(nearItem)) {
+            nearItem.setCoordinates(null);
             gameBoard.removeOccupant(coordinates);
             return "Oggetto raccolto: " + nearItem.getName();
         }

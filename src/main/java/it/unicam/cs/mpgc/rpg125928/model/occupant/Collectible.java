@@ -1,13 +1,15 @@
 package it.unicam.cs.mpgc.rpg125928.model.occupant;
 
 import it.unicam.cs.mpgc.rpg125928.model.Effect;
+import it.unicam.cs.mpgc.rpg125928.model.PowerEnhancementEffect;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "collectibles")
 public class Collectible extends Occupant{
 
-    @Transient
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = PowerEnhancementEffect.class)
+    @JoinColumn(name = "effect_id")
     private Effect effect;
     private String description;
 

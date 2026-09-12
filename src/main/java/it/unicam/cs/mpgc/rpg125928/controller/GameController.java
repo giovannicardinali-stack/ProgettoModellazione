@@ -18,9 +18,9 @@ public class GameController {
     private Player player;
 
     public GameController(MovementHandler movementHandler,
-                           InteractionHandler interactionHandler,
-                           IGameBoard gameboard,
-                           PersistanceManager gamePersistenceManager,
+                          InteractionHandler interactionHandler,
+                          IGameBoard gameboard,
+                          PersistanceManager gamePersistenceManager,
                           Player player) {
         this.movementHandler = movementHandler;
         this.interactionHandler = interactionHandler;
@@ -40,6 +40,7 @@ public class GameController {
             advanceToNextLevel();
         }
         else if(message != null && gameView != null){
+
             gameView.viewMessage(message);
             gameView.updateMapView(gameboard);
             gameView.updateInventoryView();
@@ -50,11 +51,14 @@ public class GameController {
     }
 
     private void advanceToNextLevel() {
-
         int currentLevel = gameboard.getLevel();
+
         if(LevelConfigFactory.hasNextLevel(currentLevel)){
             gameboard.incrementLevel();
             int nextLevel = gameboard.getLevel();
+
+            player.setCurrentLevel(nextLevel);
+
             LevelConfig nextLevelConfig = LevelConfigFactory.getLevelConfig(nextLevel);
             LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
             mapGenerator.populateLevel(gameboard);
@@ -78,7 +82,6 @@ public class GameController {
     }
 
     public void onDirectionChange(Direction direction){
-
         boolean moved = movementHandler.movePlayer(direction);
 
         if(moved){
@@ -105,16 +108,22 @@ public class GameController {
 
                 Player loadedPlayer = this.gameboard.getPlayer();
 
-                if(loadedPlayer != null){
+                if (loadedPlayer != null) {
                     this.player = loadedPlayer;
 
+                    while (this.gameboard.getLevel() < loadedPlayer.getCurrentLevel()) {
+                        this.gameboard.incrementLevel();
+                    }
+
                     this.interactionHandler.setPlayer(loadedPlayer);
+                    this.movementHandler.setLoadedPlayer(loadedPlayer);
 
                     Coordinates playerCoords = this.gameboard.getOccupantCoordinates(loadedPlayer);
                     if (playerCoords != null) {
                         this.movementHandler.setPlayerCoordinates(playerCoords);
                     }
                 }
+
                 if (gameView != null) {
                     gameView.updateMapView(this.gameboard);
                     gameView.updatePlayerStatsUI();
@@ -123,22 +132,27 @@ public class GameController {
                     gameView.requestFocusOnGame();
                 }
             }
-            else {
-                if (gameView != null) {
-                    gameView.viewMessage("Nessun salvataggio trovato o mappa vuota.");
-                    gameView.updateMapView(gameboard);
-                }
-            }
         }
     }
 
     public void handleItemUse(Collectible item){
+        if (item == null) return;
+
         boolean success = player.useItem(item);
 
-        if(success && gameView != null){
-            gameView.viewMessage("Hai usato: " + item.getName());
-            gameView.updatePlayerStatsUI();
-            gameView.updateInventoryView();
+        if(success) {
+
+            Coordinates itemCoords = gameboard.getOccupantCoordinates(item);
+            if (itemCoords != null) {
+                gameboard.removeOccupant(itemCoords);
+            }
+
+            if(gameView != null){
+                gameView.viewMessage("Hai usato: " + item.getName());
+                gameView.updatePlayerStatsUI();
+                gameView.updateInventoryView();
+                gameView.updateMapView(gameboard);
+            }
             saveCurrentGame();
         }
     }
@@ -150,5 +164,4 @@ public class GameController {
     public Player getPlayer() {
         return player;
     }
-
 }

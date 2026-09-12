@@ -29,8 +29,6 @@ public interface IGameBoard {
 
     int getLevel();
 
-    int getMapSize();
-
     Long countHostileNPC();
 
     void copyOccupantsFrom(IGameBoard otherBoard);

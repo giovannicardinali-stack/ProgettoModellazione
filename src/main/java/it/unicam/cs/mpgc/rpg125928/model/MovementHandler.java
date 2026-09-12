@@ -1,10 +1,12 @@
 package it.unicam.cs.mpgc.rpg125928.model;
 
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
+import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
 public class MovementHandler {
     private Coordinates playerCoordinates;
     private final IGameBoard gameBoard;
+    private Player loadedPlayer;
 
     public MovementHandler(Coordinates playerCoordinates, IGameBoard gameBoard) {
         this.playerCoordinates = playerCoordinates;
@@ -17,7 +19,12 @@ public class MovementHandler {
         if(!gameBoard.isWithinBounds(targetCoordinates) || !gameBoard.cellIsEmpty(targetCoordinates)){
             return false; }
 
-        Occupant player = gameBoard.getOccupant(playerCoordinates);
+        Occupant player = (this.loadedPlayer != null) ? this.loadedPlayer : gameBoard.getOccupant(playerCoordinates);
+
+        if (player == null) {
+            return false;
+        }
+
         gameBoard.removeOccupant(playerCoordinates);
         this.playerCoordinates = targetCoordinates;
         gameBoard.addOccupant(playerCoordinates, player);
@@ -37,5 +44,9 @@ public class MovementHandler {
 
     public void setPlayerCoordinates(Coordinates playerCoordinates) {
         this.playerCoordinates = playerCoordinates;
+    }
+
+    public void setLoadedPlayer(Player loadedPlayer) {
+        this.loadedPlayer = loadedPlayer;
     }
 }

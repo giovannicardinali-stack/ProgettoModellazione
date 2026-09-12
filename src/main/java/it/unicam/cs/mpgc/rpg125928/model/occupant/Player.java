@@ -15,6 +15,7 @@ public class Player extends Occupant {
     @JoinColumn(name = "player_id")
     private List<Collectible> inventory;
     private int inventorySize;
+    private int currentGameLevel = 1;
 
     public Player() {
 
@@ -38,6 +39,10 @@ public class Player extends Occupant {
 
     public List<Collectible> getInventory() { return inventory; }
 
+    public int getCurrentLevel() { return currentGameLevel; }
+
+    public void setCurrentLevel(int currentLevel) { this.currentGameLevel = currentLevel; }
+
     public boolean addItem(Collectible item){
         if(inventory.size() < inventorySize){
             inventory.add(item);
@@ -49,10 +54,19 @@ public class Player extends Occupant {
     }
 
     public boolean useItem(Collectible item){
-        if(inventory.contains(item)){
-            if(item.use(this)){
-                inventory.remove(item);
-                System.out.println("Hai usato: " + item.getName());
+        if (item == null || inventory == null || inventory.isEmpty()) {
+            return false;
+        }
+
+        Collectible targetItem = inventory.stream()
+                .filter(i -> i.equals(item) || (i.getId() != null && i.getId().equals(item.getId())))
+                .findFirst()
+                .orElse(null);
+
+        if (targetItem != null) {
+            if (targetItem.use(this)) {
+                inventory.remove(targetItem);
+                System.out.println("Hai usato: " + targetItem.getName());
                 return true;
             }
         }

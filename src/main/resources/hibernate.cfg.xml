@@ -23,6 +23,7 @@
         <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.NPC"/>
         <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Collectible"/>
         <mapping class="it.unicam.cs.mpgc.rpg125928.model.occupant.Obstacle"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125928.model.PowerEnhancementEffect"/>
 
     </session-factory>
 </hibernate-configuration>
