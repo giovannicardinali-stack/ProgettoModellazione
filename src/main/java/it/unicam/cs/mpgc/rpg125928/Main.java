@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg125928;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
+import it.unicam.cs.mpgc.rpg125928.controller.handler.InteractionHandler;
+import it.unicam.cs.mpgc.rpg125928.controller.handler.MovementHandler;
 import it.unicam.cs.mpgc.rpg125928.model.*;
 import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.*;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;

@@ -1,5 +1,8 @@
-package it.unicam.cs.mpgc.rpg125928.model;
+package it.unicam.cs.mpgc.rpg125928.controller.handler;
 
+import it.unicam.cs.mpgc.rpg125928.model.Coordinates;
+import it.unicam.cs.mpgc.rpg125928.model.Direction;
+import it.unicam.cs.mpgc.rpg125928.model.IGameBoard;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Occupant;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.Player;
 
