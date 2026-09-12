@@ -48,21 +48,15 @@ public class GamePersistenceManager implements PersistanceManager {
                 }
 
                 if (currentPlayer.getInventory() != null) {
-                    List<Collectible> mergedInventory = new ArrayList<>();
-                    for (Collectible item : currentPlayer.getInventory()) {
+                    List<Collectible> currentItems = new ArrayList<>(currentPlayer.getInventory());
+                    currentPlayer.getInventory().clear();
+
+                    for (Collectible item : currentItems) {
                         item.setCoordinates(null);
 
-                        if (item.getId() != null) {
-                            Collectible dbItem = session.get(Collectible.class, item.getId());
-                            if (dbItem != null) {
-                                mergedInventory.add(session.merge(item));
-                            }
-                        } else {
-                            mergedInventory.add(session.merge(item));
-                        }
+                        Collectible mergedItem = session.merge(item);
+                        currentPlayer.getInventory().add(mergedItem);
                     }
-                    currentPlayer.getInventory().clear();
-                    currentPlayer.getInventory().addAll(mergedInventory);
                 }
 
                 currentPlayer = session.merge(currentPlayer);
@@ -77,17 +71,26 @@ public class GamePersistenceManager implements PersistanceManager {
 
             List<Occupant> allDbOccupants = session.createQuery("FROM Occupant", Occupant.class).getResultList();
             for (Occupant occ : allDbOccupants) {
-
-                if (occ instanceof Player || occ instanceof Obstacle) {
+                if (occ instanceof Player || occ instanceof Obstacle || occ instanceof Collectible) {
                     continue;
                 }
 
-                boolean inInventory = (occ instanceof Collectible) && inventoryIds.contains(occ.getId());
                 boolean onBoard = gameBoard.getGameMap().values().stream()
                         .anyMatch(boardOcc -> boardOcc != null && occ.getId() != null && occ.getId().equals(boardOcc.getId()));
 
-                if (!inInventory && !onBoard) {
+                if (!onBoard) {
                     session.remove(occ);
+                }
+            }
+
+            List<Collectible> allDbCollectibles = session.createQuery("FROM Collectible", Collectible.class).getResultList();
+            for (Collectible dbItem : allDbCollectibles) {
+                boolean inInventory = inventoryIds.contains(dbItem.getId());
+                boolean onBoard = gameBoard.getGameMap().values().stream()
+                        .anyMatch(boardOcc -> boardOcc != null && boardOcc.getId() != null && boardOcc.getId().equals(dbItem.getId()));
+
+                if (!inInventory && !onBoard) {
+                    session.remove(dbItem);
                 }
             }
 

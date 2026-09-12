@@ -46,8 +46,6 @@ public class GameController {
         else if(message != null && gameView != null){
             gameView.viewMessage(message);
 
-//            saveCurrentGame();
-
             gameView.updateMapView(gameboard);
             gameView.updateInventoryView();
             gameView.updatePlayerStatsUI();
@@ -148,8 +146,6 @@ public class GameController {
 
         if(success) {
 
-//            saveCurrentGame();
-
             if(gameView != null){
                 gameView.viewMessage("Hai usato: " + item.getName());
                 gameView.updatePlayerStatsUI();
@@ -158,13 +154,6 @@ public class GameController {
             }
         }
     }
-
-//    public void manualSave() {
-//        saveCurrentGame();
-//        if (gameView != null) {
-//            gameView.viewMessage("Partita salvata manualmente con successo!");
-//        }
-//    }
 
     public IGameBoard getGameboard() {
         return gameboard;
