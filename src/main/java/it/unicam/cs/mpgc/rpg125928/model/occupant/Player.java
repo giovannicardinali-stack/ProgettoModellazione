@@ -44,13 +44,13 @@ public class Player extends Occupant {
     public void setCurrentLevel(int currentLevel) { this.currentGameLevel = currentLevel; }
 
     public boolean addItem(Collectible item){
+        if(item == null) return false;
         if(inventory.size() < inventorySize){
+            item.setCoordinates(null);
             inventory.add(item);
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     public boolean useItem(Collectible item){

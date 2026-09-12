@@ -9,6 +9,8 @@ import it.unicam.cs.mpgc.rpg125928.model.mapGenerator.MapGenerator;
 import it.unicam.cs.mpgc.rpg125928.model.occupant.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +38,7 @@ public class GamePersistenceManager implements PersistanceManager {
                         .uniqueResultOptional()
                         .orElse(null);
 
-                if (existingDbPlayer != null && currentPlayer.getId() == null) {
+                if (existingDbPlayer != null) {
                     currentPlayer.setId(existingDbPlayer.getId());
                 }
 
@@ -44,36 +46,63 @@ public class GamePersistenceManager implements PersistanceManager {
                 if (playerCoords != null) {
                     currentPlayer.setCoordinates(playerCoords);
                 }
+
+                if (currentPlayer.getInventory() != null) {
+                    List<Collectible> mergedInventory = new ArrayList<>();
+                    for (Collectible item : currentPlayer.getInventory()) {
+                        item.setCoordinates(null);
+
+                        if (item.getId() != null) {
+                            Collectible dbItem = session.get(Collectible.class, item.getId());
+                            if (dbItem != null) {
+                                mergedInventory.add(session.merge(item));
+                            }
+                        } else {
+                            mergedInventory.add(session.merge(item));
+                        }
+                    }
+                    currentPlayer.getInventory().clear();
+                    currentPlayer.getInventory().addAll(mergedInventory);
+                }
+
+                currentPlayer = session.merge(currentPlayer);
             }
 
-            List<NPC> dbNpcs = session.createQuery("FROM NPC", NPC.class).getResultList();
-            for (NPC npc : dbNpcs) {
+            Set<Long> inventoryIds = (currentPlayer != null && currentPlayer.getInventory() != null)
+                    ? currentPlayer.getInventory().stream()
+                    .filter(inv -> inv.getId() != null)
+                    .map(Collectible::getId)
+                    .collect(Collectors.toSet())
+                    : Set.of();
+
+            List<Occupant> allDbOccupants = session.createQuery("FROM Occupant", Occupant.class).getResultList();
+            for (Occupant occ : allDbOccupants) {
+
+                if (occ instanceof Player || occ instanceof Obstacle) {
+                    continue;
+                }
+
+                boolean inInventory = (occ instanceof Collectible) && inventoryIds.contains(occ.getId());
                 boolean onBoard = gameBoard.getGameMap().values().stream()
-                        .anyMatch(occ -> occ != null && npc.getId() != null && npc.getId().equals(occ.getId()));
-                if (!onBoard) {
-                    session.remove(npc);
+                        .anyMatch(boardOcc -> boardOcc != null && occ.getId() != null && occ.getId().equals(boardOcc.getId()));
+
+                if (!inInventory && !onBoard) {
+                    session.remove(occ);
                 }
             }
 
             for (Map.Entry<Coordinates, Occupant> entry : gameBoard.getGameMap().entrySet()) {
                 Occupant occupant = entry.getValue();
 
-                if (occupant != null && !(occupant instanceof Player)) {
-                    if (occupant instanceof Collectible collectible && currentPlayer != null && currentPlayer.getInventory() != null) {
-                        boolean inInventory = currentPlayer.getInventory().stream()
-                                .anyMatch(inv -> inv.getId() != null && inv.getId().equals(collectible.getId()));
-                        if (inInventory) {
+                if (occupant != null && !(occupant instanceof Player) && !(occupant instanceof Obstacle)) {
+                    if (occupant instanceof Collectible collectible) {
+                        if (collectible.getId() != null && inventoryIds.contains(collectible.getId())) {
                             continue;
                         }
                     }
-
                     occupant.setCoordinates(entry.getKey());
                     session.merge(occupant);
                 }
-            }
-
-            if (currentPlayer != null) {
-                session.merge(currentPlayer);
             }
 
             session.getTransaction().commit();
@@ -110,6 +139,12 @@ public class GamePersistenceManager implements PersistanceManager {
                     : Set.of();
 
             for (Occupant occupant : occupants) {
+                if (occupant instanceof Collectible collectible) {
+                    if (collectible.getId() != null && inventoryIds.contains(collectible.getId())) {
+                        continue;
+                    }
+                }
+
                 if (occupant instanceof Player) {
                     if (playerAdded) continue;
                     playerAdded = true;
@@ -117,12 +152,6 @@ public class GamePersistenceManager implements PersistanceManager {
 
                 if (occupant instanceof Obstacle) {
                     continue;
-                }
-
-                if (occupant instanceof Collectible collectible) {
-                    if (inventoryIds.contains(collectible.getId()) || collectible.getCoordinates() == null) {
-                        continue;
-                    }
                 }
 
                 Coordinates coords = occupant.getCoordinates();

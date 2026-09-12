@@ -40,13 +40,13 @@ public class GameController {
             advanceToNextLevel();
         }
         else if(message != null && gameView != null){
-
             gameView.viewMessage(message);
+
+            saveCurrentGame();
+
             gameView.updateMapView(gameboard);
             gameView.updateInventoryView();
             gameView.updatePlayerStatsUI();
-
-            saveCurrentGame();
         }
     }
 
@@ -66,13 +66,15 @@ public class GameController {
             if(persistenceManager != null){
                 persistenceManager.setMapGenerator(mapGenerator);
             }
+
+            saveCurrentGame();
+
             if(gameView != null){
                 gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
                 gameView.updateMapView(gameboard);
                 gameView.updateInventoryView();
                 gameView.updatePlayerStatsUI();
             }
-            saveCurrentGame();
         }
         else {
             if(gameView != null){
@@ -136,16 +138,13 @@ public class GameController {
     }
 
     public void handleItemUse(Collectible item){
-        if (item == null) return;
+        if (item == null || player == null) return;
 
         boolean success = player.useItem(item);
 
         if(success) {
 
-            Coordinates itemCoords = gameboard.getOccupantCoordinates(item);
-            if (itemCoords != null) {
-                gameboard.removeOccupant(itemCoords);
-            }
+            saveCurrentGame();
 
             if(gameView != null){
                 gameView.viewMessage("Hai usato: " + item.getName());
@@ -153,7 +152,6 @@ public class GameController {
                 gameView.updateInventoryView();
                 gameView.updateMapView(gameboard);
             }
-            saveCurrentGame();
         }
     }
 
