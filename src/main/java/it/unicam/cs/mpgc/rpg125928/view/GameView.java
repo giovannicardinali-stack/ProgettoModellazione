@@ -199,7 +199,18 @@ public class GameView {
 
         updateInventoryView();
 
-        leftPanel.getChildren().addAll(statsTitle, healthLabel, powerLabel, invTitle, inventoryListView);
+        Button saveButton = new Button("Salva Partita");
+        saveButton.setStyle("-fx-font-size: 12px; -fx-base: #444444; -fx-text-fill: #ffffff;");
+        saveButton.setMaxWidth(Double.MAX_VALUE);
+        saveButton.setFocusTraversable(false);
+
+        saveButton.setOnAction(e -> {
+            gamecontroller.saveCurrentGame();
+            viewMessage("Partita salvata manualmente con successo!");
+            requestFocusOnGame();
+        });
+
+        leftPanel.getChildren().addAll(statsTitle, healthLabel, powerLabel, invTitle, inventoryListView, saveButton);
         return leftPanel;
     }
 

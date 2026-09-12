@@ -33,6 +33,10 @@ public class GameController {
         this.gameView = gameView;
     }
 
+    public GameView getGameView() {
+        return gameView;
+    }
+
     public void handleInteraction(){
         String message = interactionHandler.handleInteraction();
 
@@ -42,7 +46,7 @@ public class GameController {
         else if(message != null && gameView != null){
             gameView.viewMessage(message);
 
-            saveCurrentGame();
+//            saveCurrentGame();
 
             gameView.updateMapView(gameboard);
             gameView.updateInventoryView();
@@ -144,7 +148,7 @@ public class GameController {
 
         if(success) {
 
-            saveCurrentGame();
+//            saveCurrentGame();
 
             if(gameView != null){
                 gameView.viewMessage("Hai usato: " + item.getName());
@@ -154,6 +158,13 @@ public class GameController {
             }
         }
     }
+
+//    public void manualSave() {
+//        saveCurrentGame();
+//        if (gameView != null) {
+//            gameView.viewMessage("Partita salvata manualmente con successo!");
+//        }
+//    }
 
     public IGameBoard getGameboard() {
         return gameboard;
