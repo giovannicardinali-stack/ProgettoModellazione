@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg125928;
 
 import it.unicam.cs.mpgc.rpg125928.controller.GameController;
+import it.unicam.cs.mpgc.rpg125928.controller.handler.CombatHandler;
+import it.unicam.cs.mpgc.rpg125928.controller.handler.DefaultCombatHandler;
 import it.unicam.cs.mpgc.rpg125928.controller.handler.InteractionHandler;
 import it.unicam.cs.mpgc.rpg125928.controller.handler.MovementHandler;
 import it.unicam.cs.mpgc.rpg125928.model.*;
@@ -33,7 +35,8 @@ public class Main extends Application {
         PersistanceManager gamePersistenceManager = new GamePersistenceManager(sessionFactory, mapGenerator);
 
         MovementHandler movementHandler = new MovementHandler(playerSpawnCoordinates, gameBoard);
-        InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard);
+        CombatHandler defaultCombatHandler = new DefaultCombatHandler(gameBoard, player);
+        InteractionHandler interactionHandler = new InteractionHandler(movementHandler, player, gameBoard, defaultCombatHandler);
 
         GameController gameController = new GameController(movementHandler
                 , interactionHandler
