@@ -39,61 +39,51 @@ public class GameController {
         return gameView;
     }
 
-    public void handleInteraction(){
+    public void handleInteraction() {
         String message = interactionHandler.handleInteraction();
 
-        if("LEVEL_CLEARED".equals(message)){
+        if ("LEVEL_CLEARED".equals(message)) {
             advanceToNextLevel();
-        }
-        else if(message != null && gameView != null){
-            gameView.viewMessage(message);
-
-            gameView.updateMapView(gameboard);
-            gameView.updateInventoryView();
-            gameView.updatePlayerStatsUI();
+        } else if (message != null) {
+            notifyViewChanges(message);
         }
     }
 
     private void advanceToNextLevel() {
         int currentLevel = gameboard.getLevel();
 
-        if(LevelConfigFactory.hasNextLevel(currentLevel)){
-            gameboard.incrementLevel();
-            int nextLevel = gameboard.getLevel();
-
-            player.setCurrentLevel(nextLevel);
-
-            LevelConfig nextLevelConfig = LevelConfigFactory.getLevelConfig(nextLevel);
-            LevelMapGenerator mapGenerator = new LevelMapGenerator(nextLevelConfig, player);
-            mapGenerator.populateLevel(gameboard);
-            movementHandler.setPlayerCoordinates(nextLevelConfig.getPlayerSpawn());
-            if(persistenceManager != null){
-                persistenceManager.setMapGenerator(mapGenerator);
-            }
-
+        if (LevelConfigFactory.hasNextLevel(currentLevel)) {
+            int nextLevel = incrementAndGetLevel();
+            setupNextLevelEnvironment(nextLevel);
             saveCurrentGame();
-
-            if(gameView != null){
-                gameView.viewMessage("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
-                gameView.updateMapView(gameboard);
-                gameView.updateInventoryView();
-                gameView.updatePlayerStatsUI();
-            }
-        }
-        else {
-            if(gameView != null){
-                gameView.viewMessage("COMPLIMENTI! Hai sconfitto tutti i nemici e completato il gioco!");
-            }
+            notifyViewChanges("Hai eliminato tutti i nemici! Benvenuto al Piano " + nextLevel);
+        } else {
+            notifyMessageOnly("COMPLIMENTI! Hai sconfitto tutti i nemici e completato il gioco!");
         }
     }
 
-    public void onDirectionChange(Direction direction){
-        boolean moved = movementHandler.movePlayer(direction);
+    private int incrementAndGetLevel() {
+        gameboard.incrementLevel();
+        int nextLevel = gameboard.getLevel();
+        player.setCurrentLevel(nextLevel);
+        return nextLevel;
+    }
 
-        if(moved){
-            if(gameView != null){
-                gameView.updateMapView(gameboard);
-            }
+    private void setupNextLevelEnvironment(int level) {
+        LevelConfig config = LevelConfigFactory.getLevelConfig(level);
+        LevelMapGenerator mapGenerator = new LevelMapGenerator(config, player);
+        mapGenerator.populateLevel(gameboard);
+        movementHandler.setPlayerCoordinates(config.getPlayerSpawn());
+
+        if (persistenceManager != null) {
+            persistenceManager.setMapGenerator(mapGenerator);
+        }
+    }
+
+    public void onDirectionChange(Direction direction) {
+        boolean moved = movementHandler.movePlayer(direction);
+        if (moved && gameView != null) {
+            gameView.updateMapView(gameboard);
         }
     }
 
@@ -104,57 +94,70 @@ public class GameController {
     }
 
     public void loadGame() {
-        if (this.persistenceManager != null) {
-            IGameBoard loadedBoard = persistenceManager.loadGame();
+        if (this.persistenceManager == null) return;
 
-            if (loadedBoard != null && !loadedBoard.isEmpty()) {
+        IGameBoard loadedBoard = persistenceManager.loadGame();
+        if (loadedBoard == null || loadedBoard.isEmpty()) return;
 
-                this.gameboard.clear();
-                this.gameboard.copyOccupantsFrom(loadedBoard);
+        applyLoadedBoardState(loadedBoard);
+        notifyGameLoadedSuccessfully();
+    }
 
-                Player loadedPlayer = this.gameboard.getPlayer();
+    private void applyLoadedBoardState(IGameBoard loadedBoard) {
+        this.gameboard.clear();
+        this.gameboard.copyOccupantsFrom(loadedBoard);
 
-                if (loadedPlayer != null) {
-                    this.player = loadedPlayer;
+        Player loadedPlayer = this.gameboard.getPlayer();
+        if (loadedPlayer == null) return;
 
-                    while (this.gameboard.getLevel() < loadedPlayer.getCurrentLevel()) {
-                        this.gameboard.incrementLevel();
-                    }
+        this.player = loadedPlayer;
+        syncBoardLevelWithPlayer(loadedPlayer);
 
-                    this.interactionHandler.setPlayer(loadedPlayer);
-                    this.movementHandler.setLoadedPlayer(loadedPlayer);
+        this.interactionHandler.setPlayer(loadedPlayer);
+        this.movementHandler.setLoadedPlayer(loadedPlayer);
 
-                    Coordinates playerCoords = this.gameboard.getOccupantCoordinates(loadedPlayer);
-                    if (playerCoords != null) {
-                        this.movementHandler.setPlayerCoordinates(playerCoords);
-                    }
-                }
-
-                if (gameView != null) {
-                    gameView.updateMapView(this.gameboard);
-                    gameView.updatePlayerStatsUI();
-                    gameView.updateInventoryView();
-                    gameView.viewMessage("Partita caricata con successo!");
-                    gameView.requestFocusOnGame();
-                }
-            }
+        Coordinates playerCoords = this.gameboard.getOccupantCoordinates(loadedPlayer);
+        if (playerCoords != null) {
+            this.movementHandler.setPlayerCoordinates(playerCoords);
         }
     }
 
-    public void handleItemUse(Collectible item){
+    private void syncBoardLevelWithPlayer(Player loadedPlayer) {
+        while (this.gameboard.getLevel() < loadedPlayer.getCurrentLevel()) {
+            this.gameboard.incrementLevel();
+        }
+    }
+
+    public void handleItemUse(Collectible item) {
         if (item == null || player == null) return;
 
         boolean success = player.useItem(item);
-
-        if(success) {
-
-            if(gameView != null){
-                gameView.viewMessage("Hai usato: " + item.getName());
-                gameView.updatePlayerStatsUI();
-                gameView.updateInventoryView();
-                gameView.updateMapView(gameboard);
-            }
+        if (success) {
+            notifyViewChanges("Hai usato: " + item.getName());
         }
+    }
+
+    private void notifyViewChanges(String message) {
+        if (gameView == null) return;
+        gameView.viewMessage(message);
+        gameView.updateMapView(gameboard);
+        gameView.updateInventoryView();
+        gameView.updatePlayerStatsUI();
+    }
+
+    private void notifyMessageOnly(String message) {
+        if (gameView != null) {
+            gameView.viewMessage(message);
+        }
+    }
+
+    private void notifyGameLoadedSuccessfully() {
+        if (gameView == null) return;
+        gameView.updateMapView(this.gameboard);
+        gameView.updatePlayerStatsUI();
+        gameView.updateInventoryView();
+        gameView.viewMessage("Partita caricata con successo!");
+        gameView.requestFocusOnGame();
     }
 
     public IGameBoard getGameboard() {
